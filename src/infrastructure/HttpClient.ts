@@ -27,11 +27,11 @@ export class HttpClient implements IHttpClient {
     return new Promise<string>(function (resolve, reject) {
       let chunks: any[] = [];
       const req = https
+        // Maybe use retries here depending on status code and/or error?
         .request(options, (resp) => {
           if (!resp.statusCode || resp.statusCode < 200 || resp.statusCode > 299) {
             reject(new Error(`statusCode=${resp.statusCode}`));
           }
-
           resp.on('data', (chunk) => {
             chunks.push(chunk);
           });

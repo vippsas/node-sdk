@@ -1,9 +1,3 @@
-// Some of the ARM template generated URLs include ending slash, others don't. :shrug:
-const stripTrailingSlash = (url) => (url ? url.replace(/\/$/, '') : url);
-
-const prependProtocolIfNoProtocolPrefix = (url, protocol) =>
-  url === undefined || url.startsWith('http') ? url : `${protocol}://${url}`;
-
 export const CLIENT_ID = process.env.CLIENT_ID || '<specify client id for local testing here or use env var>';
 export const CLIENT_SECRET = process.env.CLIENT_SECRET || '<specify client secret for local testing or use env var>';
 export const SUBSCRIPTION_KEY =
@@ -35,10 +29,3 @@ export const MERCHANT_HEADERS = {
   'Ocp-Apim-Subscription-Key': SUBSCRIPTION_KEY,
   'Merchant-Serial-Number': MERCHANT_SERIAL_NUMBER,
 };
-
-export const {
-  APENT_VIPPS_SENERE_CLIENT_ID,
-  APENT_VIPPS_SENERE_CLIENT_SECRET,
-  APENT_VIPPS_SENERE_SUBSCRIPTION_KEY,
-  APENT_VIPPS_SENERE_MERCHANT_SERIAL_NUMBER,
-} = process.env;
