@@ -9,8 +9,9 @@ import * as environmentUtils from './environment.utils.js';
 import { Vipps } from '../src/Vipps.js';
 import { VippsConfigurationOptions } from '../src/infrastructure/VippsConfigurationOptions.js';
 
-export const createSession = async () => {
+export const createSession = async (): Promise<void> => {
   const orderId = uuid();
+  console.log(`Creating session with orderId: ${orderId}`);
   const vipps = new Vipps({
     clientId: environmentUtils.CLIENT_ID,
     clientSecret: environmentUtils.CLIENT_SECRET,
@@ -38,7 +39,12 @@ export const createSession = async () => {
     } as PaymentMerchantInfo,
   } as InitiateSessionRequest;
 
-  // POST
-  const createSessionResponse = vipps.checkoutService.createSession(initiateSessionRequest);
-  console.log(createSessionResponse);
+  try {
+    const createSessionResponse = await vipps.checkoutService.createSession(initiateSessionRequest);
+    console.log(`Created session with orderId: ${orderId}, pollingUrl: ${createSessionResponse.pollingUrl}`);
+    const sessionPollResponse = await vipps.checkoutService.getSessionDetails(orderId);
+    console.log(`Polling session with orderId: ${orderId}, state: ${sessionPollResponse.sessionState}`);
+  } catch (err) {
+    console.log(err);
+  }
 };

@@ -10,7 +10,12 @@ export class HttpClient implements IHttpClient {
     this.port = port;
   }
 
-  makeRequest = (path: string, method: HttpMethod, headers: OutgoingHttpHeaders, requestData?: any): any => {
+  makeRequest = (
+    path: string,
+    method: HttpMethod,
+    headers: OutgoingHttpHeaders,
+    requestData?: string,
+  ): Promise<string> => {
     const options = {
       hostname: this.hostname,
       port: this.port,
@@ -19,27 +24,35 @@ export class HttpClient implements IHttpClient {
       headers: headers,
     } as https.RequestOptions;
 
-    let returnValue: any = null;
-    const req = https
-      .request(options, (resp) => {
-        console.log('statusCode:', resp.statusCode);
-        // log the data
-        resp.on('data', (d) => {
-          process.stdout.write(d);
-          returnValue = d;
+    return new Promise<string>(function (resolve, reject) {
+      let chunks: any[] = [];
+      const req = https
+        .request(options, (resp) => {
+          if (!resp.statusCode || resp.statusCode < 200 || resp.statusCode > 299) {
+            reject(new Error(`statusCode=${resp.statusCode}`));
+          }
+
+          resp.on('data', (chunk) => {
+            chunks.push(chunk);
+          });
+          resp.on('end', () => {
+            try {
+              const body = Buffer.concat(chunks).toString();
+              resolve(body);
+            } catch (e) {
+              reject(e);
+            }
+          });
+        })
+        .on('error', (err) => {
+          reject(err);
         });
-      })
-      .on('error', (err) => {
-        console.log('Error: ' + err.message);
-        throw err; // TODO: maybe wrap in custom exception?
-      });
 
-    if (!!requestData) {
-      req.write(JSON.stringify(requestData));
-    }
+      if (!!requestData) {
+        req.write(requestData);
+      }
 
-    req.end();
-
-    return returnValue;
+      req.end();
+    });
   };
 }

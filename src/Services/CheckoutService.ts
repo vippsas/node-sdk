@@ -22,14 +22,23 @@ export class CheckoutService {
     } as OutgoingHttpHeaders;
   }
 
-  createSession = (data: InitiateSessionRequest): InitiateSessionResponse => {
-    const response = this.httpClient.makeRequest('/checkout/v3/session', HttpMethod.POST, this.headers, data);
+  createSession = async (data: InitiateSessionRequest): Promise<InitiateSessionResponse> => {
+    const response = await this.httpClient.makeRequest(
+      '/checkout/v3/session',
+      HttpMethod.POST,
+      this.headers,
+      JSON.stringify(data),
+    );
     const parsed = JSON.parse(response) as InitiateSessionResponse;
     return parsed;
   };
 
-  getSessionDetails = (reference: string) => {
-    const response = this.httpClient.makeRequest(`/checkout/v3/session/${reference}`, HttpMethod.GET, this.headers);
+  getSessionDetails = async (reference: string): Promise<SessionResponse> => {
+    const response = await this.httpClient.makeRequest(
+      `/checkout/v3/session/${reference}`,
+      HttpMethod.GET,
+      this.headers,
+    );
     const parsed = JSON.parse(response) as SessionResponse;
     return parsed;
   };

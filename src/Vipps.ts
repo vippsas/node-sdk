@@ -17,7 +17,7 @@ export class Vipps {
     this.httpClient =
       httpClient ||
       new HttpClient(
-        options.useTestMode ? 'ece46ec4-6f9c-489b-8fe5-146a89e11635.tech-02.net' : 'api.vipps.no', // TODO: https://apitest.vipps.no for testmode
+        options.useTestMode ? 'ece46ec4-6f9c-489b-8fe5-146a89e11635.tech-02.net' : 'api.vipps.no', // TODO: apitest.vipps.no for testmode
         443,
       );
 

@@ -9,5 +9,10 @@ export enum HttpMethod {
 }
 
 export interface IHttpClient {
-  makeRequest: (path: string, method: HttpMethod, headers: OutgoingHttpHeaders, requestData?: any) => any;
+  makeRequest: (
+    path: string,
+    method: HttpMethod,
+    headers: OutgoingHttpHeaders,
+    requestData?: string,
+  ) => Promise<string>;
 }
