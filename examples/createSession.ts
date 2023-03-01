@@ -1,13 +1,11 @@
 import {
-  Api,
   InitiateSessionRequest,
   PaymentTransaction,
   PaymentMerchantInfo,
-  RequestParams,
   Amount,
-} from './autogen/checkoutapi.js';
+} from '../src/autogen/checkout.types.js';
 import { v4 as uuid } from 'uuid';
-import { MERCHANT_HEADERS } from './utils/environment.utils.js';
+import { MERCHANT_HEADERS } from './environment.utils.js';
 
 export const createSession = async () => {
   const orderId = uuid();
