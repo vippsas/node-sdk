@@ -1,4 +1,4 @@
-export interface ShippingDetails {
+export interface VippsConfigurationOptions {
   /** Example: "My plugin" */
   pluginName: string;
   /** Example: "1.0.0" */

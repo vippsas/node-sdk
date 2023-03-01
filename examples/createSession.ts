@@ -5,11 +5,22 @@ import {
   Amount,
 } from '../src/autogen/checkout.types.js';
 import { v4 as uuid } from 'uuid';
-import { MERCHANT_HEADERS } from './environment.utils.js';
+import * as environmentUtils from './environment.utils.js';
+import { Vipps } from '../src/Vipps.js';
+import { VippsConfigurationOptions } from '../src/infrastructure/VippsConfigurationOptions.js';
 
 export const createSession = async () => {
   const orderId = uuid();
-  const checkoutapi = new Api();
+  const vipps = new Vipps({
+    clientId: environmentUtils.CLIENT_ID,
+    clientSecret: environmentUtils.CLIENT_SECRET,
+    merchantSerialNumber: environmentUtils.MERCHANT_SERIAL_NUMBER,
+    pluginName: 'PluginName',
+    pluginVersion: 'PluginVersion',
+    subscriptionKey: environmentUtils.SUBSCRIPTION_KEY,
+    useTestMode: true,
+  } as VippsConfigurationOptions);
+
   const initiateSessionRequest = {
     transaction: {
       amount: {
@@ -26,13 +37,8 @@ export const createSession = async () => {
       termsAndConditionsUrl: 'https://some.where.com/terms',
     } as PaymentMerchantInfo,
   } as InitiateSessionRequest;
-  const requestParams = {
-    baseUrl: 'https://ece46ec4-6f9c-489b-8fe5-146a89e11635.tech-02.net/checkout/v3',
-    headers: {
-      ...MERCHANT_HEADERS,
-    },
-  } as RequestParams;
+
   // POST
-  const createSessionResponse = await checkoutapi.session.sessionCreate(initiateSessionRequest, requestParams);
-  console.log(createSessionResponse.status, createSessionResponse.data);
+  const createSessionResponse = vipps.checkoutService.createSession(initiateSessionRequest);
+  console.log(createSessionResponse);
 };
