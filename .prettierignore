@@ -1,0 +1,4 @@
+*.md
+*template.html
+*generated*
+*/build
