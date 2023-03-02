@@ -10,7 +10,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
-    "start": "tsc && node dist/examples/index.js"
+    "start": "tsc && node dist/examples/index.js",
+    "autogen": "npx swagger-typescript-api -p \"https://vippsas.github.io/vipps-developer-docs/redocusaurus/epayment-swagger-id.yaml\"  -o ./src/autogen -n epayment.types.ts --no-client && npx swagger-typescript-api -p \"https://vippsas.github.io/vipps-developer-docs/redocusaurus/checkout-swagger-id.yaml\"  -o ./src/autogen -n checkout.types.ts --no-client"
   },
   "keywords": [],
   "author": "",
