@@ -16,5 +16,5 @@ export interface VippsConfigurationOptions {
    * Example: "123456". */
   merchantSerialNumber: string;
   /** If true, uses Vipps test environment */
-  useTestMode: boolean;
+  useTestMode?: boolean;
 }
