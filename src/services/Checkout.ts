@@ -4,36 +4,35 @@ import { get, post } from '../infrastructure/httpRequest';
 import { InitiateSessionRequest, InitiateSessionResponse, SessionResponse } from '../autogen/checkout.types';
 
 export class Checkout {
-  hostname: string;
-  port: number;
   headers: OutgoingHttpHeaders;
+  configoptions: VippsConfigurationOptions;
   checkoutSessionPath: string;
 
-  constructor(
-    hostname: string,
-    port: number,
-    configoptions: VippsConfigurationOptions,
-    commonHeaders: OutgoingHttpHeaders,
-  ) {
+  constructor(configoptions: VippsConfigurationOptions) {
+    this.configoptions = configoptions;
     this.checkoutSessionPath = '/checkout/v3/session';
-    this.hostname = hostname;
-    this.port = port;
     this.headers = {
-      ...commonHeaders,
       client_id: configoptions.clientId,
       client_secret: configoptions.clientSecret,
     };
   }
 
-  createSession = async (data: InitiateSessionRequest): Promise<InitiateSessionResponse> => {
-    const response = await post(this.hostname, this.port, this.checkoutSessionPath, this.headers, JSON.stringify(data));
-    const deserializedResponse: InitiateSessionResponse = JSON.parse(response);
-    return deserializedResponse;
+  createSession = async (data: InitiateSessionRequest) => {
+    const response = await post<InitiateSessionRequest, InitiateSessionResponse>(
+      this.configoptions,
+      this.checkoutSessionPath,
+      this.headers,
+      data,
+    );
+    return response;
   };
 
-  getSessionDetails = async (reference: string): Promise<SessionResponse> => {
-    const response = await get(this.hostname, this.port, `${this.checkoutSessionPath}/${reference}`, this.headers);
-    const deserializedResponse: SessionResponse = JSON.parse(response);
-    return deserializedResponse;
+  getSessionDetails = async (reference: string) => {
+    const response = await get<SessionResponse>(
+      this.configoptions,
+      `${this.checkoutSessionPath}/${reference}`,
+      this.headers,
+    );
+    return response;
   };
 }

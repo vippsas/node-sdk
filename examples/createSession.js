@@ -1,4 +1,4 @@
-const Vipps = require('../lib/Vipps.js');
+const Vipps = require('../lib').default;
 
 const createSession = async () => {
   const orderId = `Node-SDK-${Math.floor(Math.random() * 10000000)}`;
@@ -12,7 +12,7 @@ const createSession = async () => {
     useTestMode: true,
   };
 
-  const vipps = new Vipps.Vipps(config);
+  const vipps = new Vipps(config);
 
   const initiateSessionRequest = {
     transaction: {
