@@ -29,7 +29,7 @@ const makeRequest = (
           try {
             const body = Buffer.concat(chunks).toString();
             if (!resp.statusCode || resp.statusCode < 200 || resp.statusCode > 299) {
-              const error: Error = { name: `statusCode=${resp.statusCode}`, message: `contents=${body}` };
+              const error: Error = new Error(`statusCode=${resp.statusCode}, contents=${body}`);
               reject(error);
             } else {
               resolve(body);
