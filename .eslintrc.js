@@ -16,6 +16,7 @@ module.exports = {
     project: './tsconfig.json',
   },
   rules: {
+    '@typescript-eslint/lines-between-class-members': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
     curly: ['error', 'all'],
     'import/prefer-default-export': 'off',

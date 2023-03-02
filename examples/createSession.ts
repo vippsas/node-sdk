@@ -4,14 +4,13 @@ import {
   PaymentMerchantInfo,
   Amount,
 } from '../src/autogen/checkout.types.js';
-import { v4 as uuid } from 'uuid';
-import * as environmentUtils from './environment.utils.js';
+import * as environmentUtils from './environment.utils';
 import { Vipps } from '../src/Vipps.js';
 import { VippsConfigurationOptions } from '../src/infrastructure/VippsConfigurationOptions.js';
 
 export const createSession = async (): Promise<void> => {
-  const orderId = uuid();
-  console.log(`Creating session with orderId: ${orderId}`);
+  const orderId = `Node-SDK-${Math.floor(Math.random() * 10000000)}`;
+  process.stdout.write(`Creating session with orderId: ${orderId}`);
   const vipps = new Vipps({
     clientId: environmentUtils.CLIENT_ID,
     clientSecret: environmentUtils.CLIENT_SECRET,
@@ -33,7 +32,7 @@ export const createSession = async (): Promise<void> => {
     } as PaymentTransaction,
     merchantInfo: {
       returnUrl: 'https://some.where.com/return',
-      callbackAuthorizationToken: uuid(),
+      callbackAuthorizationToken: `CallbackAuthToken-${Math.floor(Math.random() * 10000)}`,
       callbackUrl: 'https://some.where.com/callback',
       termsAndConditionsUrl: 'https://some.where.com/terms',
     } as PaymentMerchantInfo,
@@ -41,10 +40,10 @@ export const createSession = async (): Promise<void> => {
 
   try {
     const createSessionResponse = await vipps.checkoutService.createSession(initiateSessionRequest);
-    console.log(`Created session with orderId: ${orderId}, pollingUrl: ${createSessionResponse.pollingUrl}`);
+    process.stdout.write(`\nCreated session with orderId: ${orderId}, pollingUrl: ${createSessionResponse.pollingUrl}`);
     const sessionPollResponse = await vipps.checkoutService.getSessionDetails(orderId);
-    console.log(`Polling session with orderId: ${orderId}, state: ${sessionPollResponse.sessionState}`);
-  } catch (err) {
-    console.log(err);
+    process.stdout.write(`\nPolling session with orderId: ${orderId}, state: ${sessionPollResponse.sessionState}`);
+  } catch (err: unknown) {
+    process.stdout.write(`\nError: ${JSON.stringify(err)}\n`);
   }
 };

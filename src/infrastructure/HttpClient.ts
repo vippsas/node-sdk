@@ -5,6 +5,7 @@ import { HttpMethod, IHttpClient } from './IHttpClient';
 export class HttpClient implements IHttpClient {
   hostname: string;
   port: number;
+
   constructor(hostname: string, port: number) {
     this.hostname = hostname;
     this.port = port;
@@ -19,26 +20,28 @@ export class HttpClient implements IHttpClient {
     const options = {
       hostname: this.hostname,
       port: this.port,
-      path: path,
+      path,
       method: HttpMethod[method],
-      headers: headers,
+      headers,
     } as https.RequestOptions;
 
-    return new Promise<string>(function (resolve, reject) {
-      let chunks: any[] = [];
+    return new Promise<string>((resolve, reject) => {
+      const chunks: any[] = [];
       const req = https
         // Maybe use retries here depending on status code and/or error?
         .request(options, (resp) => {
-          if (!resp.statusCode || resp.statusCode < 200 || resp.statusCode > 299) {
-            reject(new Error(`statusCode=${resp.statusCode}`));
-          }
           resp.on('data', (chunk) => {
             chunks.push(chunk);
           });
           resp.on('end', () => {
             try {
               const body = Buffer.concat(chunks).toString();
-              resolve(body);
+              if (!resp.statusCode || resp.statusCode < 200 || resp.statusCode > 299) {
+                const error = { name: `statusCode=${resp.statusCode}`, message: `contents=${body}` } as Error;
+                reject(error);
+              } else {
+                resolve(body);
+              }
             } catch (e) {
               reject(e);
             }
@@ -48,7 +51,7 @@ export class HttpClient implements IHttpClient {
           reject(err);
         });
 
-      if (!!requestData) {
+      if (requestData) {
         req.write(requestData);
       }
 
