@@ -1,15 +1,14 @@
 const Vipps = require('../lib/Vipps.js');
-const environmentUtils = require('./environment.utils');
 
 const createSession = async () => {
   const orderId = `Node-SDK-${Math.floor(Math.random() * 10000000)}`;
   const config = {
-    clientId: environmentUtils.CLIENT_ID,
-    clientSecret: environmentUtils.CLIENT_SECRET,
-    merchantSerialNumber: environmentUtils.MERCHANT_SERIAL_NUMBER,
+    clientId: process.env.CLIENT_ID,
+    clientSecret: process.env.CLIENT_SECRET,
+    merchantSerialNumber: process.env.MERCHANT_SERIAL_NUMBER,
     pluginName: 'PluginName',
     pluginVersion: 'PluginVersion',
-    subscriptionKey: environmentUtils.SUBSCRIPTION_KEY,
+    subscriptionKey: process.env.SUBSCRIPTION_KEY,
     useTestMode: true,
   };
 
