@@ -1,4 +1,4 @@
 *.md
 *template.html
-*generated*
+*/src/autogen
 */build
