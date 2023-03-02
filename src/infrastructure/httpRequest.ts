@@ -9,9 +9,6 @@ const makeRequest = <TI, TR>(
   headers: OutgoingHttpHeaders,
   requestData?: TI,
 ) => {
-  // TODO: apitest.vipps.no for testmode
-  const hostname = configoptions.useTestMode ? 'ece46ec4-6f9c-489b-8fe5-146a89e11635.tech-02.net' : 'api.vipps.no';
-
   const commonHeaders: OutgoingHttpHeaders = {
     'Content-type': 'application/json; charset="utf-8"',
     'Ocp-Apim-Subscription-Key': configoptions.subscriptionKey,
@@ -22,13 +19,12 @@ const makeRequest = <TI, TR>(
     'Vipps-System-Plugin-Version': configoptions.pluginVersion,
   };
 
-  const joinedheaders: OutgoingHttpHeaders = { ...headers, ...commonHeaders };
-
   const options: https.RequestOptions = {
     method,
-    hostname,
+    // TODO: apitest.vipps.no for testmode
+    hostname: configoptions.useTestMode ? 'ece46ec4-6f9c-489b-8fe5-146a89e11635.tech-02.net' : 'api.vipps.no',
     path,
-    headers: joinedheaders,
+    headers: { ...headers, ...commonHeaders },
   };
 
   return new Promise<TR>((resolve, reject) => {

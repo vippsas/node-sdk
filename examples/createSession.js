@@ -1,4 +1,4 @@
-const Vipps = require('../lib').default;
+const Vipps = require('../lib');
 
 const createSession = async () => {
   const orderId = `Node-SDK-${Math.floor(Math.random() * 10000000)}`;
