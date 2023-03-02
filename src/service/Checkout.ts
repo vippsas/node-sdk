@@ -1,7 +1,6 @@
 import { OutgoingHttpHeaders } from 'http';
 import { VippsConfigurationOptions } from 'infrastructure/VippsConfigurationOptions';
 import { get, post } from 'infrastructure/httpRequest';
-import { serialize, deserialize } from 'infrastructure/jsonSerialization';
 import { InitiateSessionRequest, InitiateSessionResponse, SessionResponse } from 'autogen/checkout.types';
 
 export class Checkout {
@@ -27,12 +26,14 @@ export class Checkout {
   }
 
   createSession = async (data: InitiateSessionRequest): Promise<InitiateSessionResponse> => {
-    const response = await post(this.hostname, this.port, this.checkoutSessionPath, this.headers, serialize(data));
-    return deserialize<InitiateSessionResponse>(response);
+    const response = await post(this.hostname, this.port, this.checkoutSessionPath, this.headers, JSON.stringify(data));
+    const deserializedResponse: InitiateSessionResponse = JSON.parse(response);
+    return deserializedResponse;
   };
 
   getSessionDetails = async (reference: string): Promise<SessionResponse> => {
     const response = await get(this.hostname, this.port, `${this.checkoutSessionPath}/${reference}`, this.headers);
-    return deserialize<SessionResponse>(response);
+    const deserializedResponse: SessionResponse = JSON.parse(response);
+    return deserializedResponse;
   };
 }
