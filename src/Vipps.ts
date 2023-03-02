@@ -1,6 +1,6 @@
 import { OutgoingHttpHeaders } from 'http';
-import { VippsConfigurationOptions } from 'infrastructure/VippsConfigurationOptions';
-import { Checkout } from 'service/Checkout';
+import { VippsConfigurationOptions } from './infrastructure/VippsConfigurationOptions';
+import { Checkout } from './services/Checkout';
 
 export class Vipps {
   checkout: Checkout;

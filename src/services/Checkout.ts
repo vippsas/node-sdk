@@ -1,7 +1,7 @@
 import { OutgoingHttpHeaders } from 'http';
-import { VippsConfigurationOptions } from 'infrastructure/VippsConfigurationOptions';
-import { get, post } from 'infrastructure/httpRequest';
-import { InitiateSessionRequest, InitiateSessionResponse, SessionResponse } from 'autogen/checkout.types';
+import { VippsConfigurationOptions } from '../infrastructure/VippsConfigurationOptions';
+import { get, post } from '../infrastructure/httpRequest';
+import { InitiateSessionRequest, InitiateSessionResponse, SessionResponse } from '../autogen/checkout.types';
 
 export class Checkout {
   hostname: string;
