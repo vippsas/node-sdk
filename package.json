@@ -1,0 +1,34 @@
+{
+  "name": "@vippsno/vipps-sdk",
+  "version": "0.9.0",
+  "engines": {
+    "node": ">=14.x.x",
+    "npm": ">=7.x.x"
+  },
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "start": "tsc && node examples/index.js",
+    "autogen": "npx swagger-typescript-api -p \"https://vippsas.github.io/vipps-developer-docs/redocusaurus/epayment-swagger-id.yaml\"  -o ./src/@types -n epayment.types.ts --no-client && npx swagger-typescript-api -p \"https://vippsas.github.io/vipps-developer-docs/redocusaurus/checkout-swagger-id.yaml\"  -o ./src/@types -n checkout.types.ts --no-client"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^18.14.2",
+    "@types/uuid": "^9.0.1",
+    "@typescript-eslint/eslint-plugin": "^5.54.0",
+    "@typescript-eslint/parser": "^5.54.0",
+    "eslint": "^8.35.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-airbnb-typescript": "^17.0.0",
+    "eslint-config-prettier": "^8.6.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-prettier": "^4.2.1",
+    "prettier": "^2.8.4",
+    "swagger-typescript-api": "^12.0.3",
+    "typescript": "^4.9.5"
+  }
+}
