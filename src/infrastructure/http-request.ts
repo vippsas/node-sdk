@@ -42,10 +42,13 @@ const makeRequest = <TI, TR>(
           try {
             const body = Buffer.concat(chunks).toString();
             if (!resp.statusCode || resp.statusCode < 200 || resp.statusCode > 299) {
-              const error = new Error(`statusCode=${resp.statusCode}, contents=${body}`);
+              const error = new Error(
+                `statusCode=${resp.statusCode?.toString() || 'No response status code'}, contents=${body}`,
+              );
               reject(error);
             } else {
-              resolve(JSON.parse(body));
+              const deserialized = JSON.parse(body) as TR;
+              resolve(deserialized);
             }
           } catch (e) {
             reject(e);
