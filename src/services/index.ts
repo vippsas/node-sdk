@@ -1,3 +1,3 @@
-import { Checkout } from './checkouts';
+import { Checkout } from './checkout';
 
 export default Checkout;
