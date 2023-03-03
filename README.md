@@ -1,1 +1,1 @@
-# vipps-node
+# @vippsno/vipps-sdk
