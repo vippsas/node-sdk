@@ -1,5 +1,5 @@
-import Checkout from '../services';
-import { VippsConfiguration } from './vipps-configuration.types';
+import Checkout from './services';
+import { VippsConfiguration } from './@types/vipps-configuration.types';
 
 export class Vipps {
   checkout: Checkout;
