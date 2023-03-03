@@ -11,16 +11,18 @@ jobs:
   build:
     runs-on: 'ubuntu-latest'
 
+    strategy:
+      matrix:
+        node-version: [16.x, 18.x]
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Setup Node.js environment
-        uses: actions/setup-node@v3.6.0
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
         with:
-          # Version Spec of the version to use. Examples: 12.x, 10.15.1, >=10.15.0.
-          node-version: 18.x
-          # Used to specify a package manager for caching in the default directory. Supported values: npm, yarn, pnpm.
+          node-version: ${{ matrix.node-version }}
           cache: npm
 
       - name: Cache
