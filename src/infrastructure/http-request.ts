@@ -1,9 +1,12 @@
 import { OutgoingHttpHeaders } from 'node:http';
 import https from 'node:https';
-import { VippsConfigurationOptions } from './VippsConfigurationOptions';
+import { VippsConfiguration } from '../@types/vipps-configuration.types';
+
+const VIPPS_SYSTEM_NAME = 'Vipps Node SDK';
+const VIPPS_SYSTEM_VERSION = '0.9.0';
 
 const makeRequest = <TI, TR>(
-  configoptions: VippsConfigurationOptions,
+  configuration: VippsConfiguration,
   method: string,
   path: string,
   headers: OutgoingHttpHeaders,
@@ -11,18 +14,18 @@ const makeRequest = <TI, TR>(
 ) => {
   const commonHeaders: OutgoingHttpHeaders = {
     'Content-type': 'application/json; charset="utf-8"',
-    'Ocp-Apim-Subscription-Key': configoptions.subscriptionKey,
-    'Merchant-Serial-Number': configoptions.merchantSerialNumber,
-    'Vipps-System-Name': 'Vipps node SDK',
-    'Vipps-System-Version': '0.9.0',
-    'Vipps-System-Plugin-Name': configoptions.pluginName,
-    'Vipps-System-Plugin-Version': configoptions.pluginVersion,
+    'Ocp-Apim-Subscription-Key': configuration.subscriptionKey,
+    'Merchant-Serial-Number': configuration.merchantSerialNumber,
+    'Vipps-System-Name': VIPPS_SYSTEM_NAME,
+    'Vipps-System-Version': VIPPS_SYSTEM_VERSION,
+    'Vipps-System-Plugin-Name': configuration.pluginName,
+    'Vipps-System-Plugin-Version': configuration.pluginVersion,
   };
 
   const options: https.RequestOptions = {
     method,
     // TODO: apitest.vipps.no for testmode
-    hostname: configoptions.useTestMode ? 'ece46ec4-6f9c-489b-8fe5-146a89e11635.tech-02.net' : 'api.vipps.no',
+    hostname: configuration.useTestMode ? 'ece46ec4-6f9c-489b-8fe5-146a89e11635.tech-02.net' : 'api.vipps.no',
     path,
     headers: { ...headers, ...commonHeaders },
   };
@@ -61,15 +64,12 @@ const makeRequest = <TI, TR>(
   });
 };
 
-export const get = <TR>(
-  configoptions: VippsConfigurationOptions,
-  path: string,
-  headers: OutgoingHttpHeaders,
-): Promise<TR> => makeRequest<void, TR>(configoptions, 'GET', path, headers, undefined);
+export const get = <TR>(configuration: VippsConfiguration, path: string, headers: OutgoingHttpHeaders): Promise<TR> =>
+  makeRequest<void, TR>(configuration, 'GET', path, headers, undefined);
 
 export const post = <TI, TR>(
-  configoptions: VippsConfigurationOptions,
+  configuration: VippsConfiguration,
   path: string,
   headers: OutgoingHttpHeaders,
   requestData?: TI,
-) => makeRequest<TI, TR>(configoptions, 'POST', path, headers, requestData);
+) => makeRequest<TI, TR>(configuration, 'POST', path, headers, requestData);

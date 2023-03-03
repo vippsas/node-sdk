@@ -1,4 +1,4 @@
-export interface VippsConfigurationOptions {
+export interface VippsConfiguration {
   /** Example: "My plugin" */
   pluginName: string;
   /** Example: "1.0.0" */

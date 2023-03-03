@@ -1,25 +1,25 @@
 import { OutgoingHttpHeaders } from 'http';
-import { VippsConfigurationOptions } from '../infrastructure/VippsConfigurationOptions';
-import { get, post } from '../infrastructure/httpRequest';
-import { InitiateSessionRequest, InitiateSessionResponse, SessionResponse } from '../autogen/checkout.types';
+import { VippsConfiguration } from '../@types/vipps-configuration.types';
+import { get, post } from '../infrastructure/http-request';
+import { InitiateSessionRequest, InitiateSessionResponse, SessionResponse } from '../@types/checkout.types';
 
 export class Checkout {
   headers: OutgoingHttpHeaders;
-  configoptions: VippsConfigurationOptions;
+  configuration: VippsConfiguration;
   checkoutSessionPath: string;
 
-  constructor(configoptions: VippsConfigurationOptions) {
-    this.configoptions = configoptions;
+  constructor(configuration: VippsConfiguration) {
+    this.configuration = configuration;
     this.checkoutSessionPath = '/checkout/v3/session';
     this.headers = {
-      client_id: configoptions.clientId,
-      client_secret: configoptions.clientSecret,
+      client_id: configuration.clientId,
+      client_secret: configuration.clientSecret,
     };
   }
 
   createSession = async (data: InitiateSessionRequest) => {
     const response = await post<InitiateSessionRequest, InitiateSessionResponse>(
-      this.configoptions,
+      this.configuration,
       this.checkoutSessionPath,
       this.headers,
       data,
@@ -29,7 +29,7 @@ export class Checkout {
 
   getSessionDetails = async (reference: string) => {
     const response = await get<SessionResponse>(
-      this.configoptions,
+      this.configuration,
       `${this.checkoutSessionPath}/${reference}`,
       this.headers,
     );

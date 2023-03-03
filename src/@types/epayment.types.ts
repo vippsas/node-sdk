@@ -1,5 +1,3 @@
-/* eslint-disable */
-/* tslint:disable */
 /*
  * ---------------------------------------------------------------
  * ## THIS FILE WAS GENERATED VIA SWAGGER-TYPESCRIPT-API        ##
@@ -8,7 +6,6 @@
  * ## SOURCE: https://github.com/acacode/swagger-typescript-api ##
  * ---------------------------------------------------------------
  */
-
 /**
  * Customer
  * Target customer
@@ -125,7 +122,8 @@ export interface CreatePaymentRequest {
     size?: number | null;
   };
   /**
-   * The payment description summary that will be provided to the user through the app, the merchant portal, and the settlement files.
+   * The payment description summary that will be provided to the user through the app,
+   * the merchant portal, and the settlement files.
    * @minLength 3
    * @maxLength 100
    */
@@ -321,7 +319,8 @@ export interface Address {
 
 /** Profile */
 export interface ProfileRequest {
-  /** A space-separated string list of requested user information in accordance with the OpenID Connect specification. */
+  /** A space-separated string list of requested user information
+   * in accordance with the OpenID Connect specification. */
   scope?: string;
 }
 
@@ -412,7 +411,8 @@ export interface Problem {
    * @format uri
    */
   type: string;
-  /** A short, human-readable summary of the problem type. It will not change from occurrence to occurrence of the problem. */
+  /** A short, human-readable summary of the problem type.
+   * It will not change from occurrence to occurrence of the problem. */
   title: string;
   /** A human-readable explanation specific to this occurrence of the problem. */
   detail?: string;
