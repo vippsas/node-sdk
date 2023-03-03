@@ -1,0 +1,51 @@
+name: 'PR build pipeline'
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: 'ubuntu-latest'
+
+    strategy:
+      matrix:
+        node-version: [14.x]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+
+      - name: Cache
+        id: cache-modules
+        uses: actions/cache@v3.2.3
+        with:
+          # A list of files, directories, and wildcard patterns to cache and restore
+          path: './node_modules'
+          # An explicit key for restoring and saving the cache
+          key: ${{ runner.os }}-modules-${{ hashFiles('./package-lock.json', './package.json') }}
+
+      - name: 'Install dependencies'
+        if: steps.cache-modules.outputs.cache-hit != 'true'
+        run: npm ci
+
+      - name: 'Run lint'
+        run: npm run lint
+
+      - name: 'Run prettier'
+        run: npm run prettier
+
+      - name: 'Run audit'
+        run: npm run audit
+
+      - name: 'Run build'
+        run: npm run ts
