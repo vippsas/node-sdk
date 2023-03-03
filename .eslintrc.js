@@ -2,7 +2,7 @@ module.exports = {
   root: true,
   parser: '@typescript-eslint/parser',
   ignorePatterns: ['.eslintrc.js', '/examples', 'lib', '*/lib'],
-  extends: ['airbnb', 'airbnb-typescript', 'eslint:recommended', 'plugin:@typescript-eslint/recommended', 'prettier'],
+  extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended', 'prettier'],
   plugins: ['@typescript-eslint'],
   parserOptions: {
     project: './tsconfig.json',
