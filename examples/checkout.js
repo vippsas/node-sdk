@@ -1,6 +1,6 @@
 const Vipps = require('../lib');
 
-const createSession = async () => {
+(async () => {
   const orderId = `Node-SDK-${Math.floor(Math.random() * 10000000)}`;
   const config = {
     clientId: process.env.CLIENT_ID,
@@ -31,12 +31,12 @@ const createSession = async () => {
     },
   };
 
-  await vipps.checkout.createSession(initiateSessionRequest);
+  const session = await vipps.checkout.createSession(initiateSessionRequest);
+  console.log(session);
 
   const sessionPollResponse = await vipps.checkout.getSessionDetails(orderId);
+  console.log(sessionPollResponse);
   if (sessionPollResponse.sessionState !== 'SessionCreated') {
     throw new Error('Session was  not in state Created');
   }
-};
-
-module.exports = { createSession };
+})();

@@ -1,3 +1,2 @@
-const createSession = require('./createSession.js');
-
-createSession.createSession();
+require('./ePayment.js');
+require('./checkout.js');

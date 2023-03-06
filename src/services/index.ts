@@ -1,3 +1,2 @@
-import { Checkout } from './checkout';
-
-export default Checkout;
+export * from './checkout';
+export * from './e-payment';
