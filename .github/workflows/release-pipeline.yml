@@ -1,4 +1,4 @@
-name: 'PR build pipeline'
+name: 'Release pipeline'
 on:
   pull_request:
     branches:
