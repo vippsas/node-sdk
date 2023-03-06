@@ -1,0 +1,20 @@
+{
+  "branches": ["main", "vico-918-versioning"],
+  "plugins": [
+    "@semantic-release/commit-analyzer",
+    "@semantic-release/release-notes-generator",
+    "@semantic-release/changelog",
+    [
+      "@semantic-release/github",
+      {
+        "assets": [
+          {
+            "path": "lib/**",
+            "label": "vippsno-vipps-sdk-${nextRelease.gitTag}",
+            "name": "vippsno-vipps-sdk-${nextRelease.gitTag}"
+          }
+        ]
+      }
+    ]
+  ]
+}
