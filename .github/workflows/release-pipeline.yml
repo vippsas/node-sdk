@@ -1,6 +1,6 @@
 name: 'Release pipeline'
 on:
-  pull_request:
+  push:
     branches:
       - vico-918-versioning #TODO: main
 
