@@ -1,4 +1,4 @@
-name: 'PR build pipeline'
+name: 'Release pipeline'
 on:
   pull_request:
     branches:
@@ -49,6 +49,3 @@ jobs:
 
       - name: 'Run build'
         run: npm run build
-
-      - name: 'Run semantic-release' #TODO: change to only run in Main on Push - Also add npm releasing in .releaserc.json
-        run: npx semantic-release --dry-run

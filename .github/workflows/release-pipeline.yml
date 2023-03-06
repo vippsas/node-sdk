@@ -1,0 +1,29 @@
+name: 'PR build pipeline'
+on:
+  pull_request:
+    branches:
+      - vico-918-versioning #TODO: main
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: 'ubuntu-latest'
+
+    strategy:
+      matrix:
+        node-version: [18.14.2]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+
+      - name: 'Run semantic-release' #TODO: change to only run in Main on Push - Also add npm releasing in .releaserc.json
+        run: npx semantic-release --dry-run
