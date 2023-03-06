@@ -2,7 +2,13 @@ module.exports = {
   root: true,
   parser: '@typescript-eslint/parser',
   ignorePatterns: ['.eslintrc.js', '/examples', 'lib', '*/lib'],
-  extends: ['airbnb', 'airbnb-typescript', 'eslint:recommended', 'plugin:@typescript-eslint/recommended', 'prettier'],
+  extends: [
+    'airbnb-base',
+    'airbnb-typescript',
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
+    'prettier',
+  ],
   plugins: ['@typescript-eslint'],
   parserOptions: {
     project: './tsconfig.json',
@@ -13,5 +19,6 @@ module.exports = {
     curly: ['error', 'all'],
     'import/prefer-default-export': 'off',
     'max-len': ['error', 120],
+    'react/jsx-filename-extension': 'off',
   },
 };
