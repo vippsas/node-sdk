@@ -2,7 +2,7 @@ name: Release
 
 on:
   push:
-    branches: ['vico-918-nbgv'] #TODO: replace with main
+    branches: ['main']
 
 jobs:
   build:
