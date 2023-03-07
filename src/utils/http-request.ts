@@ -1,5 +1,6 @@
 import { OutgoingHttpHeaders } from 'node:http';
 import https from 'node:https';
+import { withRetries } from './retry';
 
 const makeRequest = <TI, TR>(
   hostname: string,
@@ -49,8 +50,10 @@ const makeRequest = <TI, TR>(
   });
 };
 
+const makeRequestWithRetries = withRetries(makeRequest);
+
 export const get = <TR>(hostname: string, path: string, headers: OutgoingHttpHeaders): Promise<TR> =>
-  makeRequest<void, TR>(hostname, 'GET', path, headers, undefined);
+  makeRequestWithRetries<void, TR>(hostname, 'GET', path, headers, undefined);
 
 export const post = <TI, TR>(hostname: string, path: string, headers: OutgoingHttpHeaders, requestData?: TI) =>
-  makeRequest<TI, TR>(hostname, 'POST', path, headers, requestData);
+  makeRequestWithRetries<TI, TR>(hostname, 'POST', path, headers, requestData);

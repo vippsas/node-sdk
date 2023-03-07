@@ -1,5 +1,5 @@
 import { OutgoingHttpHeaders } from 'http';
-import { get, post } from '../infrastructure/http-request';
+import { get, post } from '../utils/http-request';
 import * as types from '../@types';
 
 export class Checkout {

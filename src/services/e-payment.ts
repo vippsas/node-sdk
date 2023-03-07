@@ -1,5 +1,5 @@
 import { OutgoingHttpHeaders } from 'node:http';
-import { get, post } from '../infrastructure/http-request';
+import { get, post } from '../utils/http-request';
 import { AccessTokenClient } from '../infrastructure/access-token-client';
 import * as types from '../@types';
 
