@@ -5,8 +5,11 @@
     "node": ">=14.x.x",
     "npm": ">=7.x.x"
   },
-  "description": "",
-  "main": "index.js",
+  "description": "Vipps SDK",
+  "main": "lib/index.js",
+  "files": [
+    "lib"
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc --build",
@@ -32,6 +35,7 @@
     "eslint-config-prettier": "^8.7.0",
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-prettier": "^4.2.1",
+    "nerdbank-gitversioning": "^3.6.79-alpha",
     "prettier": "^2.8.4",
     "swagger-typescript-api": "^12.0.3",
     "typescript": "^4.9.5"
