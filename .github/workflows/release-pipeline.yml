@@ -1,0 +1,82 @@
+name: Release
+
+on:
+  push:
+    branches: ['vico-918-nbgv'] #TODO: replace with main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # needed to push tag
+    strategy:
+      matrix:
+        node-version: [18.14.2]
+
+    steps:
+      - name: Get repo with depth
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # needed to calculate version
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+      - name: Cache
+        id: cache-modules
+        uses: actions/cache@v3.2.3
+        with:
+          path: './node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('./package-lock.json', './package.json') }}
+
+      - name: 'Install dependencies'
+        if: steps.cache-modules.outputs.cache-hit != 'true'
+        run: npm ci
+
+      # Setup necessary info to create tag
+      - name: Set version variable with v, for use in tag and release
+        run: 'echo "RELEASE_VERSION=$(nbgv get-version --variable SimpleVersion)" >> $GITHUB_ENV'
+      - name: Set tag variable with v, for use in tag and release
+        run: 'echo "RELEASE_TAG=v${{ env.RELEASE_VERSION }}" >> $GITHUB_ENV'
+      - name: Configure git username
+        run: git config user.name github-actions-bot
+      - name: Configure git user email
+        run: git config user.email noreply@vipps.no
+      # Create git tag
+      - name: Create Tag
+        run: git tag ${{ env.RELEASE_TAG }} -m ${{ env.RELEASE_TAG }}
+      - name: Publish Tag
+        run: git push --tags
+      # Create git release
+      - name: 'Create GitHub Release'
+        uses: 'actions/github-script@v6'
+        with:
+          github-token: '${{ secrets.GITHUB_TOKEN }}'
+          script: |
+            try {
+              const response = await github.rest.repos.createRelease({
+                draft: false,
+                generate_release_notes: true,
+                name: process.env.RELEASE_TAG,
+                owner: context.repo.owner,
+                prerelease: false,
+                repo: context.repo.repo,
+                tag_name: process.env.RELEASE_TAG,
+              });
+
+              core.exportVariable('RELEASE_ID', response.data.id);
+              core.exportVariable('RELEASE_UPLOAD_URL', response.data.upload_url);
+            } catch (error) {
+              core.setFailed(error.message);
+            }
+      - name: Set npm version
+        run: npm version ${{ env.RELEASE_VERSION }}
+      # Create Npm pack.
+      - name: Pack Npm
+        run: npm run packnpm
+      - name: Upload Npm package as artifact #replace with npm
+        uses: actions/upload-artifact@v3
+        with:
+          name: Npm package
+          path: vippsno-vipps-sdk-*.tgz
