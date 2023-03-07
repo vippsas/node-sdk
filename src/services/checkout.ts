@@ -1,38 +1,47 @@
 import { OutgoingHttpHeaders } from 'http';
-import { VippsConfiguration } from '../@types/vipps-configuration.types';
 import { get, post } from '../infrastructure/http-request';
-import { InitiateSessionRequest, InitiateSessionResponse, SessionResponse } from '../@types/checkout.types';
+import * as types from '../@types';
 
 export class Checkout {
   headers: OutgoingHttpHeaders;
-  configuration: VippsConfiguration;
   checkoutSessionPath: string;
+  vippsHostname: string;
 
-  constructor(configuration: VippsConfiguration) {
-    this.configuration = configuration;
+  constructor(configuration: types.InternalVippsConfiguration) {
     this.checkoutSessionPath = '/checkout/v3/session';
+    // TODO: apitest.vipps.no for testmode
+    this.vippsHostname = configuration.useTestMode
+      ? 'ece46ec4-6f9c-489b-8fe5-146a89e11635.tech-02.net'
+      : 'api.vipps.no';
     this.headers = {
       client_id: configuration.clientId,
       client_secret: configuration.clientSecret,
+      'Content-type': 'application/json; charset="utf-8"',
+      'Ocp-Apim-Subscription-Key': configuration.subscriptionKey,
+      'Merchant-Serial-Number': configuration.merchantSerialNumber,
+      'Vipps-System-Name': configuration.vippsSystemName,
+      'Vipps-System-Version': configuration.vippsSystemVersion,
+      'Vipps-System-Plugin-Name': configuration.pluginName,
+      'Vipps-System-Plugin-Version': configuration.pluginVersion,
     };
   }
 
-  createSession = async (data: InitiateSessionRequest) => {
-    const response = await post<InitiateSessionRequest, InitiateSessionResponse>(
-      this.configuration,
+  async createSession(
+    requestData: types.Checkout.InitiateSessionRequest,
+  ): Promise<types.Checkout.InitiateSessionResponse> {
+    return post<types.Checkout.InitiateSessionRequest, types.Checkout.InitiateSessionResponse>(
+      this.vippsHostname,
       this.checkoutSessionPath,
       this.headers,
-      data,
+      requestData,
     );
-    return response;
-  };
+  }
 
-  getSessionDetails = async (reference: string) => {
-    const response = await get<SessionResponse>(
-      this.configuration,
+  async getSessionDetails(reference: string): Promise<types.Checkout.SessionResponse> {
+    return get<types.Checkout.SessionResponse>(
+      this.vippsHostname,
       `${this.checkoutSessionPath}/${reference}`,
       this.headers,
     );
-    return response;
-  };
+  }
 }

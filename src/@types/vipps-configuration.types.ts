@@ -18,3 +18,8 @@ export interface VippsConfiguration {
   /** If true, uses Vipps test environment */
   useTestMode?: boolean;
 }
+
+export interface InternalVippsConfiguration extends VippsConfiguration {
+  vippsSystemName: string;
+  vippsSystemVersion: string;
+}
