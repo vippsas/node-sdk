@@ -71,7 +71,7 @@ jobs:
               core.setFailed(error.message);
             }
       - name: Set npm version
-        run: npm version ${{ env.RELEASE_VERSION }}
+        run: npm version ${{ env.RELEASE_VERSION }} --no-git-tag-version
       # Create Npm pack.
       - name: Pack Npm
         run: npm run packnpm
