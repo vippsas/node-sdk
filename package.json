@@ -5,8 +5,11 @@
     "node": ">=14.x.x",
     "npm": ">=7.x.x"
   },
-  "description": "",
-  "main": "index.js",
+  "description": "Vipps SDK",
+  "main": "lib/index.js",
+  "files": [
+    "lib"
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc --build",
@@ -14,9 +17,10 @@
     "autogen:checkout": "npx swagger-typescript-api -p \"https://vippsas.github.io/vipps-developer-docs/redocusaurus/checkout-swagger-id.yaml\"  -o ./src/@types -n checkout.types.ts --no-client && npx swagger-typescript-api -p \"https://vippsas.github.io/vipps-developer-docs/redocusaurus/checkout-swagger-id.yaml\"  -o ./src/@types -n checkout.types.ts --no-client",
     "autogen:epayment": "npx swagger-typescript-api -p \"https://vippsas.github.io/vipps-developer-docs/redocusaurus/epayment-swagger-id.yaml\"  -o ./src/@types -n epayment.types.ts --no-client && npx swagger-typescript-api -p \"https://vippsas.github.io/vipps-developer-docs/redocusaurus/epayment-swagger-id.yaml\"  -o ./src/@types -n epayment.types.ts --no-client",
     "autogen:access-token": "npx swagger-typescript-api -p \"https://vippsas.github.io/vipps-developer-docs/redocusaurus/access-token-swagger-id.yaml\"  -o ./src/@types -n access-token.types.ts --no-client && npx swagger-typescript-api -p \"https://vippsas.github.io/vipps-developer-docs/redocusaurus/access-token-swagger-id.yaml\"  -o ./src/@types -n access-token.types.ts --no-client",
-    "audit": "(npm outdated) && (npm audit fix --registry=https://registry.npmjs.org/)",
+    "audit": "(npm outdated) && (npm audit --registry=https://registry.npmjs.org/)",
     "lint": "eslint src --color",
-    "prettier": "prettier -c src"
+    "prettier": "prettier -c src",
+    "sdk-version": "echo $npm_package_version"
   },
   "keywords": [],
   "author": "",
