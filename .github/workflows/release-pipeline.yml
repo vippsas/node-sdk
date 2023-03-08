@@ -2,7 +2,7 @@ name: Release
 
 on:
   push:
-    branches: ['main', 'vico-918-basicversion']
+    branches: ['main']
 
 jobs:
   build:
