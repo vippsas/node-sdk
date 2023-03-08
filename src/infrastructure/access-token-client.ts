@@ -1,5 +1,5 @@
 import { OutgoingHttpHeaders } from 'node:http';
-import { post } from './http-request';
+import { post } from '../utils/http-request';
 import * as types from '../@types';
 
 type VippsCredentials = Pick<types.InternalVippsConfiguration, 'clientId' | 'clientSecret' | 'subscriptionKey'>;
