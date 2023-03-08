@@ -1,6 +1,6 @@
 import { OutgoingHttpHeaders } from 'node:http';
 import https from 'node:https';
-import { withRetries } from './retry';
+import retry from 'async-retry';
 
 const makeRequest = <TI, TR>(
   hostname: string,
@@ -19,7 +19,6 @@ const makeRequest = <TI, TR>(
   return new Promise<TR>((resolve, reject) => {
     const chunks: any[] = [];
     const req = https
-      // Maybe use retries here depending on status code and/or error?
       .request(options, (res) => {
         res.on('data', (chunk) => {
           chunks.push(chunk);
@@ -50,10 +49,8 @@ const makeRequest = <TI, TR>(
   });
 };
 
-const makeRequestWithRetries = withRetries(makeRequest);
-
 export const get = <TR>(hostname: string, path: string, headers: OutgoingHttpHeaders): Promise<TR> =>
-  makeRequestWithRetries<void, TR>(hostname, 'GET', path, headers, undefined);
+  retry(() => makeRequest<void, TR>(hostname, 'GET', path, headers, undefined), { retries: 4 });
 
 export const post = <TI, TR>(hostname: string, path: string, headers: OutgoingHttpHeaders, requestData?: TI) =>
-  makeRequestWithRetries<TI, TR>(hostname, 'POST', path, headers, requestData);
+  retry(() => makeRequest<TI, TR>(hostname, 'POST', path, headers, requestData), { retries: 4 });
