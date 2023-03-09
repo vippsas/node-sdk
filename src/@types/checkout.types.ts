@@ -1,3 +1,5 @@
+/* eslint-disable */
+/* tslint:disable */
 /*
  * ---------------------------------------------------------------
  * ## THIS FILE WAS GENERATED VIA SWAGGER-TYPESCRIPT-API        ##
@@ -6,8 +8,8 @@
  * ## SOURCE: https://github.com/acacode/swagger-typescript-api ##
  * ---------------------------------------------------------------
  */
-/** Amounts are specified in minor units.
- * For Norwegian kroner (NOK) that means 1 kr = 100 øre. Example: 499 kr = 49900 øre. */
+
+/** Amounts are specified in minor units. For Norwegian kroner (NOK) that means 1 kr = 100 øre. Example: 499 kr = 49900 øre. */
 export interface Amount {
   /**
    * Must be in Minor Units. The smallest unit of a currency. Example 100 NOK = 10000.
@@ -46,14 +48,14 @@ export interface CheckoutConfig {
   elements?: Elements | null;
   /** Countries to allow during session */
   countries?: Countries | null;
-  /** One of the following: "WEB_REDIRECT", "NATIVE_REDIRECT".
-   * To ensure having a return URL based on an app URL, use "NATIVE_REDIRECT". */
+  /** One of the following: "WEB_REDIRECT", "NATIVE_REDIRECT". To ensure having a return URL based on an app URL, use "NATIVE_REDIRECT". */
   userFlow?: UserFlow | null;
-  /** Requires the customer to consent to share their email and openid sub with the merchant
-   *  to be able to make a wallet payment (default: false). */
+  /** Requires the customer to consent to share their email and openid sub with the merchant to be able to make a wallet payment (default: false). */
   requireUserInfo?: boolean | null;
   /** If used, displays a checkbox that can be used to ask for extra consent. */
   customConsent?: CustomConsent | null;
+  /** Decides whether the order lines are displayed as a shopping cart context in the checkout. */
+  showOrderSummary?: boolean | null;
 }
 
 /** Information about the merchant system. */
@@ -69,15 +71,13 @@ export interface CheckoutSessionThirdPartyInformationHeaders {
 }
 
 export interface Countries {
-  /** List of allowed countries in ISO-3166 Alpha 2.
-   * If specified, the customer will only be able to select these countries. Example ["NO", "SE", "DK"] */
+  /** List of allowed countries in ISO-3166 Alpha 2. If specified, the customer will only be able to select these countries. Example ["NO", "SE", "DK"] */
   supported?: string[];
 }
 
 /** If used, displays a checkbox that can be used to ask for extra consent. */
 export interface CustomConsent {
-  /** Text displayed next to the checkbox.
-   * This text can contain up to one link in markdown format like this: [linkText](https://example.com) */
+  /** Text displayed next to the checkbox. This text can contain up to one link in markdown format like this: [linkText](https://example.com) */
   text?: string;
   /** Whether box has to be checked to complete the checkout. */
   required?: boolean;
@@ -104,15 +104,21 @@ export enum ExternalSessionState {
 
 /** Configuration required to enable Helthjem logistics options */
 export interface Helthjem {
-  /** The Username provided to you by Helthjem */
-  username?: string;
-  /** The Password provided to you by Helthjem */
-  password?: string;
+  /**
+   * The Username provided to you by Helthjem
+   * @minLength 1
+   */
+  username: string;
+  /**
+   * The Password provided to you by Helthjem
+   * @minLength 1
+   */
+  password: string;
   /**
    * The ShopId provided to you by Helthjem
    * @format int32
    */
-  shopId?: number;
+  shopId: number;
 }
 
 export type HelthjemLogisticsOption = LogisticsOptionBase & {
@@ -122,7 +128,7 @@ export type HelthjemLogisticsOption = LogisticsOptionBase & {
    * @default "HELTHJEM"
    * @pattern HELTHJEM
    */
-  brand: string;
+  brand?: string;
 };
 
 export enum HelthjemLogisticsType {
@@ -142,8 +148,7 @@ export interface InitiateSessionRequest {
 
 /** Response from initiating a session. */
 export interface InitiateSessionResponse {
-  /** The token to be provided to Checkout.
-   * Example: "eyJh<>.eyJ<>.ln7VzZkNvUGu0HhyA_a8IbXQN35WhDBmCYC9IvyYL-I" */
+  /** The token to be provided to Checkout. Example: "eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJzZXNzaW9uSWQiOiJUdHF1Y3I5ZDdKRHZ6clhYWTU1WUZRIiwic2Vzc2lvblBvbGxpbmdVUkwiOiJodHRwOi8vbG9jYWxob3N0OjUwMDAvY2hlY2tvdXQvc2Vzc2lvbi9UdHF1Y3I5ZDdKRHZ6clhYWTU1WUZRIn0.ln7VzZkNvUGu0HhyA_a8IbXQN35WhDBmCYC9IvyYL-I" */
   token?: string;
   /** The URL of the checkout frontend. Example: "https://vippscheckout.vipps.no/v1/". */
   checkoutFrontendUrl?: string;
@@ -153,10 +158,16 @@ export interface InitiateSessionResponse {
 
 /** Configuration required to enable Instabox logistics options */
 export interface Instabox {
-  /** The client id provided to you by Instabox */
-  clientId?: string;
-  /** The client secret provided to you by Instabox */
-  clientSecret?: string;
+  /**
+   * The client id provided to you by Instabox
+   * @minLength 1
+   */
+  clientId: string;
+  /**
+   * The client secret provided to you by Instabox
+   * @minLength 1
+   */
+  clientSecret: string;
 }
 
 /** Details needed to book an instabox order */
@@ -176,7 +187,7 @@ export type InstaboxLogisticsOption = LogisticsOptionBase & {
    * @default "INSTABOX"
    * @pattern INSTABOX
    */
-  brand: string;
+  brand?: string;
 };
 
 export enum InstaboxLogisticsType {
@@ -197,14 +208,11 @@ export interface Integrations {
  * If both dynamic and fixed options are specified, dynamic options is provided to the user.
  * If no DynamicOptionsCallback is provided, only fixed logistics options will be used.
  * When using dynamic shipping we recommend that you define logistics.fixedOptions as a backup.
- * If the callback does not resolve successfully within 8 seconds,
- * returns null or an empty list the system will fall back to static options.
- * If no fallback options are provided,
- * the user will be presented with an error and will not be able to continue with the checkout.
+ * If the callback does not resolve successfully within 8 seconds, returns null or an empty list the system will fall back to static options.
+ * If no fallback options are provided, the user will be presented with an error and will not be able to continue with the checkout.
  */
 export interface Logistics {
-  /** Merchant's Callback URL for providing dynamic logistics options based on customer address.
-   * Example: "https://example.com/vipps/dynamiclogisticsoption". Can not be used with AddressFields set to false. */
+  /** Merchant's Callback URL for providing dynamic logistics options based on customer address. Example: "https://example.com/vipps/dynamiclogisticsoption". Can not be used with AddressFields set to false. */
   dynamicOptionsCallback?: string | null;
   /** Fixed list of logistics options. */
   fixedOptions?:
@@ -217,14 +225,12 @@ export interface Logistics {
         | OtherLogisticsOption
       )[]
     | null;
-  /** Some optional checkout features require carrier-specific configuration.
-   * Can not be used with AddressFields set to false. */
+  /** Some optional checkout features require carrier-specific configuration. Can not be used with AddressFields set to false. */
   integrations?: Integrations | null;
 }
 
 export interface LogisticsOptionBase {
-  /** Amounts are specified in minor units.
-   * For Norwegian kroner (NOK) that means 1 kr = 100 øre. Example: 499 kr = 49900 øre. */
+  /** Amounts are specified in minor units. For Norwegian kroner (NOK) that means 1 kr = 100 øre. Example: 499 kr = 49900 øre. */
   amount?: Amount;
   /**
    * @minLength 1
@@ -243,8 +249,7 @@ export interface LogisticsOptionBase {
 /** Headers required to retrieve an access token. */
 export interface MerchantAuthInfoHeaders {
   /**
-   * Client ID for the merchant (the "username").
-   * Found in the Vipps portal. Example: "fb492b5e-7907-4d83-bc20-c7fb60ca35de".
+   * Client ID for the merchant (the "username"). Found in the Vipps portal. Example: "fb492b5e-7907-4d83-bc20-c7fb60ca35de".
    * @minLength 1
    */
   client_id: string;
@@ -290,8 +295,7 @@ export interface OrderBottomLine {
    */
   tipAmount?: number | null;
   /**
-   * Amount paid by gift card or coupon. Must be in Minor Units.
-   * The smallest unit of a currency. Example 100 NOK = 10000.
+   * Amount paid by gift card or coupon. Must be in Minor Units. The smallest unit of a currency. Example 100 NOK = 10000.
    * @format int64
    */
   giftCardAmount?: number | null;
@@ -313,22 +317,19 @@ export interface OrderLine {
    */
   id: string;
   /**
-   * Total amount of the order line, including tax and discount.
-   * Must be in Minor Units. The smallest unit of a currency. Example 100 NOK = 10000.
+   * Total amount of the order line, including tax and discount. Must be in Minor Units. The smallest unit of a currency. Example 100 NOK = 10000.
    * @format int64
    * @min 0
    */
   totalAmount: number;
   /**
-   * Total amount of order line with discount excluding tax.
-   * Must be in Minor Units. The smallest unit of a currency. Example 100 NOK = 10000.
+   * Total amount of order line with discount excluding tax. Must be in Minor Units. The smallest unit of a currency. Example 100 NOK = 10000.
    * @format int64
    * @min 0
    */
   totalAmountExcludingTax: number;
   /**
-   * Total tax amount paid for the order line.
-   * Must be in Minor Units. The smallest unit of a currency. Example 100 NOK = 10000.
+   * Total tax amount paid for the order line. Must be in Minor Units. The smallest unit of a currency. Example 100 NOK = 10000.
    * @format int64
    * @min 0
    */
@@ -343,15 +344,13 @@ export interface OrderLine {
   /** If no quantity info is provided the order line will default to 1 pcs. */
   unitInfo?: OrderUnitInfo | null;
   /**
-   * Total discount for the order line.
-   * Must be in Minor Units. The smallest unit of a currency. Example 100 NOK = 10000.
+   * Total discount for the order line. Must be in Minor Units. The smallest unit of a currency. Example 100 NOK = 10000.
    * @format int64
    */
   discount?: number | null;
   /** URL linking back to the product at the merchant. */
   productUrl?: string | null;
-  /** Flag for marking the orderline as returned.
-   * This will make it count negative towards all the sums in BottomLine. */
+  /** Flag for marking the orderline as returned. This will make it count negative towards all the sums in BottomLine. */
   isReturn?: boolean | null;
   /** Flag for marking the orderline as a shipping line. This will be shown differently in the app. */
   isShipping?: boolean | null;
@@ -369,8 +368,7 @@ export interface OrderSummary {
 
 export interface OrderUnitInfo {
   /**
-   * Total price per unit, including tax and excluding discount.
-   * Must be in Minor Units. The smallest unit of a currency. Example 100 NOK = 10000.
+   * Total price per unit, including tax and excluding discount. Must be in Minor Units. The smallest unit of a currency. Example 100 NOK = 10000.
    * @format int64
    * @min 0
    */
@@ -386,12 +384,12 @@ export type OtherLogisticsOption = LogisticsOptionBase & {
    * @minLength 1
    * @maxLength 200
    */
-  title: string;
+  title?: string;
   /**
    * @default "OTHER"
    * @pattern OTHER
    */
-  brand: string;
+  brand?: string;
 };
 
 export interface PaymentMerchantInfo {
@@ -402,8 +400,7 @@ export interface PaymentMerchantInfo {
    * @minLength 1
    */
   returnUrl: string;
-  /** The token will be supplied by the callback to the merchant as a header.
-   * Example: "iOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6ImllX3FXQ1hoWHh0MXpJ". */
+  /** The token will be supplied by the callback to the merchant as a header. Example: "iOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6ImllX3FXQ1hoWHh0MXpJ". */
   callbackAuthorizationToken?: string;
   /** Complete URL to the merchant's terms and conditions. Example: "https://example.com/vipps/termsAndConditions". */
   termsAndConditionsUrl?: string | null;
@@ -422,13 +419,10 @@ export enum PaymentState {
 }
 
 export interface PaymentTransaction {
-  /** Amounts are specified in minor units.
-   * For Norwegian kroner (NOK) that means 1 kr = 100 øre. Example: 499 kr = 49900 øre. */
+  /** Amounts are specified in minor units. For Norwegian kroner (NOK) that means 1 kr = 100 øre. Example: 499 kr = 49900 øre. */
   amount?: Amount;
   /**
-   * The merchant's unique reference for the transaction. Also known as OrderId.
-   * Example: "acme-shop-123-order123abc".
-   * See https://vippsas.github.io/vipps-developer-docs/docs/vipps-developers/common-topics/orderid
+   * The merchant's unique reference for the transaction. Also known as OrderId. Example: "acme-shop-123-order123abc". See https://vippsas.github.io/vipps-developer-docs/docs/vipps-developers/common-topics/orderid
    * @minLength 8
    * @maxLength 50
    * @pattern ^[-a-zA-Z0-9]*$
@@ -440,8 +434,7 @@ export interface PaymentTransaction {
    * @maxLength 100
    */
   paymentDescription?: string;
-  /** Contain descriptions of each item present in the order,
-   * and an order bottom line for information regarding the order as a whole. */
+  /** Contain descriptions of each item present in the order, and an order bottom line for information regarding the order as a whole. */
   orderSummary?: OrderSummary | null;
 }
 
@@ -469,8 +462,11 @@ export interface PickupPoint {
 export interface Porterbuddy {
   /** The public key provided to you by Porterbuddy */
   publicToken?: string;
-  /** The API key provided to you by Porterbuddy */
-  apiKey?: string;
+  /**
+   * The API key provided to you by Porterbuddy
+   * @minLength 1
+   */
+  apiKey: string;
   /** Information about the sender */
   origin?: PorterbuddyOrigin;
 }
@@ -482,7 +478,7 @@ export type PorterbuddyLogisticsOption = LogisticsOptionBase & {
    * @default "PORTERBUDDY"
    * @pattern PORTERBUDDY
    */
-  brand: string;
+  brand?: string;
 };
 
 export enum PorterbuddyLogisticsType {
@@ -495,8 +491,7 @@ export interface PorterbuddyOrigin {
   name?: string;
   /** Your email address where Porterbuddy booking confirmation will be sent */
   email?: string;
-  /** Your phone number where Porterbuddy may send you important messages.
-   * Format must be MSISDN (including country code). Example: "4791234567" */
+  /** Your phone number where Porterbuddy may send you important messages. Format must be MSISDN (including country code). Example: "4791234567" */
   phoneNumber?: string;
   /** Your address where Porterbuddy will pick up the parcels */
   address?: PorterbuddyOriginAddress;
@@ -520,7 +515,7 @@ export type PostenLogisticsOption = LogisticsOptionBase & {
    * @default "POSTEN"
    * @pattern POSTEN
    */
-  brand: string;
+  brand?: string;
 };
 
 export enum PostenLogisticsType {
@@ -536,7 +531,7 @@ export type PostnordLogisticsOption = LogisticsOptionBase & {
    * @default "POSTNORD"
    * @pattern POSTNORD
    */
-  brand: string;
+  brand?: string;
 };
 
 export enum PostnordLogisticsType {
@@ -558,13 +553,13 @@ export interface PrefillCustomer {
   /** Example: "user@example.com" */
   email?: string;
   /** Format must be MSISDN (including country code). Example: "4791234567" */
-  phoneNumber?: string;
+  phoneNumber: string;
   /** Example: "Robert Levins gate 5" */
   streetAddress?: string;
   /** Example: "Oslo" */
   city?: string;
   /** Example: "0154" */
-  postalCode?: string;
+  postalCode: string;
   /** The ISO-3166-1 Alpha-2 representation of the country. Example: "NO" */
   country?: string;
 }
@@ -590,9 +585,7 @@ export interface SessionResponse {
   sessionId?: string;
   /** The merchant's serial number. Example: "123456" */
   merchantSerialNumber?: string | null;
-  /** The merchant's unique reference for the transaction.
-   * Also known as OrderId. Example: "acme-shop-123-order123abc".
-   * See https://vippsas.github.io/vipps-developer-docs/docs/vipps-developers/common-topics/orderid */
+  /** The merchant's unique reference for the transaction. Also known as OrderId. Example: "acme-shop-123-order123abc". See https://vippsas.github.io/vipps-developer-docs/docs/vipps-developers/common-topics/orderid */
   reference?: string;
   /** The state of the session. Example: "SessionStarted". The state of the payment is in PaymentDetails.State. */
   sessionState?: ExternalSessionState;
