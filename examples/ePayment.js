@@ -32,7 +32,7 @@ const Vipps = require('../lib');
   };
 
   console.log(`---- Creating payment with reference ${reference}`);
-  const payment = await vipps.ePayment.createPayment(paymentRequest, reference);
+  const payment = await vipps.ePayment.createPayment(paymentRequest);
   console.log(payment);
 
   console.log(`---- Getting payment with reference ${reference}`);
@@ -62,7 +62,7 @@ const Vipps = require('../lib');
       },
     },
   };
-  const paymentCapture = await vipps.ePayment.capturePayment(reference, captureRequest, reference);
+  const paymentCapture = await vipps.ePayment.capturePayment(reference, captureRequest);
   console.log(paymentCapture);
 
   console.log(`---- Refunding 1NOK for payment with reference ${reference}`);
@@ -74,10 +74,10 @@ const Vipps = require('../lib');
       },
     },
   };
-  const paymentRefund = await vipps.ePayment.refundPayment(reference, refundRequest, reference);
+  const paymentRefund = await vipps.ePayment.refundPayment(reference, refundRequest);
   console.log(paymentRefund);
 
   console.log(`---- Cancelling payment with reference ${reference}`);
-  const paymentCancel = await vipps.ePayment.cancelPayment(reference, reference);
+  const paymentCancel = await vipps.ePayment.cancelPayment(reference);
   console.log(paymentCancel);
 })();

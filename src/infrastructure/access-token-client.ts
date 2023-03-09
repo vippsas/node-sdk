@@ -13,7 +13,7 @@ export class AccessTokenClient {
 
   constructor(vippsCredentials: VippsCredentials, useTestMode = false) {
     this.vippsCredentials = vippsCredentials;
-    this.hostname = useTestMode ? 'ece46ec4-6f9c-489b-8fe5-146a89e11635.tech-02.net' : 'api.vipps.no';
+    this.hostname = useTestMode ? 'apitest.vipps.no' : 'api.vipps.no';
     this.headers = {
       client_id: vippsCredentials.clientId,
       client_secret: vippsCredentials.clientSecret,
