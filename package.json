@@ -13,7 +13,6 @@
   "scripts": {
     "test": "jest",
     "build": "tsc --build",
-    "start": "tsc && node examples/index.js",
     "autogen:checkout": "npx swagger-typescript-api -p \"https://vippsas.github.io/vipps-developer-docs/redocusaurus/checkout-swagger-id.yaml\"  -o ./src/@types -n checkout.types.ts --no-client",
     "autogen:epayment": "npx swagger-typescript-api -p \"https://vippsas.github.io/vipps-developer-docs/redocusaurus/epayment-swagger-id.yaml\"  -o ./src/@types -n epayment.types.ts --no-client",
     "autogen:access-token": "npx swagger-typescript-api -p \"https://vippsas.github.io/vipps-developer-docs/redocusaurus/access-token-swagger-id.yaml\"  -o ./src/@types -n access-token.types.ts --no-client",
