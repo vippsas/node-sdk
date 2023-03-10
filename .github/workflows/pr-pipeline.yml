@@ -44,6 +44,15 @@ jobs:
       - name: 'Run prettier'
         run: npm run prettier
 
+      - name: 'Run tests'
+        env:
+          # From configuration variables in the repository
+          MERCHANT_SERIAL_NUMBER: ${{ secrets.MERCHANT_SERIAL_NUMBER }}
+          CLIENT_ID: ${{ secrets.CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+          SUBSCRIPTION_KEY: ${{ secrets.SUBSCRIPTION_KEY }}
+        run: npm test
+
       - name: 'Run audit'
         run: npm run audit
 

@@ -10,7 +10,6 @@
     "module": "CommonJS",
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "isolatedModules": true,
     "baseUrl": "./src",
     "declaration": true,
     "outDir": "./lib",
@@ -19,5 +18,5 @@
     "noImplicitAny": true,
     "strictNullChecks": true
   },
-  "include": ["src"]
+  "include": ["src", "tests"]
 }
