@@ -2,7 +2,7 @@ name: Release
 
 on:
   push:
-    branches: ['main']
+    branches: ['main', 'vico-950-license']
 
 jobs:
   build:
@@ -37,7 +37,7 @@ jobs:
       # TODO: Create and publish Npm pack.
       - name: 'NPM pack'
         run: npm pack
-      - name: Upload nuget package as artifact #replace with nuget
+      - name: Upload npm package as artifact #replace with npm
         uses: actions/upload-artifact@v3
         with:
           name: Npm package
