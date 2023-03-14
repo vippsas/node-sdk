@@ -2,13 +2,13 @@ import { OutgoingHttpHeaders } from 'node:http';
 import https from 'node:https';
 import retry from 'async-retry';
 
-const makeRequest = <TI, TR>(
+function makeRequest<TR>(
   hostname: string,
   method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE',
   path: string,
   headers: OutgoingHttpHeaders,
-  requestData?: TI,
-) => {
+  requestData?: any,
+): Promise<TR> {
   const options: https.RequestOptions = {
     method,
     hostname,
@@ -27,11 +27,14 @@ const makeRequest = <TI, TR>(
           try {
             const body = Buffer.concat(chunks).toString();
             if (!res.statusCode || res.statusCode < 200 || res.statusCode > 299) {
-              const error = new Error(`statusCode=${res.statusCode}, contents=${body}`);
+              const error = new Error(`path=${req.path} ,statusCode=${res.statusCode}, contents=${body}`);
               reject(error);
             } else if (res.headers['content-type']?.includes('application/json')) {
               resolve(JSON.parse(body));
+            } else if (res.headers['content-type']?.includes('text/plain')) {
+              resolve(body as TR);
             }
+            resolve(null as TR);
           } catch (e) {
             reject(e);
           }
@@ -47,10 +50,10 @@ const makeRequest = <TI, TR>(
 
     req.end();
   });
-};
+}
 
 export const get = <TR>(hostname: string, path: string, headers: OutgoingHttpHeaders): Promise<TR> =>
-  retry(() => makeRequest<void, TR>(hostname, 'GET', path, headers, undefined), { retries: 4 });
+  retry(() => makeRequest<TR>(hostname, 'GET', path, headers), { retries: 4 });
 
 export const post = <TI, TR>(hostname: string, path: string, headers: OutgoingHttpHeaders, requestData?: TI) =>
-  retry(() => makeRequest<TI, TR>(hostname, 'POST', path, headers, requestData), { retries: 4 });
+  retry(() => makeRequest<TR>(hostname, 'POST', path, headers, requestData), { retries: 4 });

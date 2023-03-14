@@ -3,16 +3,14 @@ import { get, post } from '../utils/http-request';
 import * as types from '../@types';
 
 export class Checkout {
-  headers: OutgoingHttpHeaders;
-  checkoutSessionPath: string;
-  vippsHostname: string;
+  private headers: OutgoingHttpHeaders;
+  private checkoutSessionPath: string;
+  private vippsHostname: string;
 
   constructor(configuration: types.InternalVippsConfiguration) {
     this.checkoutSessionPath = '/checkout/v3/session';
     // TODO: apitest.vipps.no for testmode
-    this.vippsHostname = configuration.useTestMode
-      ? 'ece46ec4-6f9c-489b-8fe5-146a89e11635.tech-02.net'
-      : 'api.vipps.no';
+    this.vippsHostname = configuration.useTestMode ? 'apitest.vipps.no' : 'api.vipps.no';
     this.headers = {
       client_id: configuration.clientId,
       client_secret: configuration.clientSecret,

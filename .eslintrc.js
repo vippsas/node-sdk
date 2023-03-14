@@ -1,7 +1,7 @@
 module.exports = {
   root: true,
   parser: '@typescript-eslint/parser',
-  ignorePatterns: ['.eslintrc.js', '/examples', 'lib', '*/lib'],
+  ignorePatterns: ['.eslintrc.js', '/examples', 'lib', '*/lib', 'jest.config.js'],
   extends: [
     'airbnb-base',
     'airbnb-typescript',
