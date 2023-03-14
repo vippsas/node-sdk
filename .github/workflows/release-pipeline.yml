@@ -2,7 +2,7 @@ name: Release
 
 on:
   push:
-    branches: ['main', 'vico-950-license']
+    branches: ['main']
 
 jobs:
   build:
