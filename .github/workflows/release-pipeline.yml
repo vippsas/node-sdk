@@ -35,13 +35,6 @@ jobs:
       - name: 'Install dependencies, no dev'
         run: npm ci --omit=dev
       # TODO: Create and publish Npm pack.
-      - name: 'NPM pack'
-        run: npm pack
-      - name: Upload npm package as artifact #replace with npm
-        uses: actions/upload-artifact@v3
-        with:
-          name: Npm package
-          path: vippsno-vipps-sdk-*.tgz
       # Setup necessary info to create tag
       - name: Set version variable with v, for use in tag and release
         run: 'echo "RELEASE_TAG=v$(npm run --silent sdk-version)" >> $GITHUB_ENV'
