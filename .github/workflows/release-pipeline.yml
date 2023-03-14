@@ -28,8 +28,6 @@ jobs:
         run: npm ci
       - name: 'Run build'
         run: npm run build
-      - name: 'Generate third party notice with license and copyright information'
-        run: npm run generate-third-party-notice
       - name: 'Delete node_modules'
         run: rm -rf node_modules
       - name: 'Install dependencies, no dev'
