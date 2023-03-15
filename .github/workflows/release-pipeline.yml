@@ -2,7 +2,7 @@ name: Release
 
 on:
   push:
-    branches: ['main']
+    branches: ['main', 'vico-920-publish-npm']
 
 jobs:
   build:
@@ -32,7 +32,6 @@ jobs:
         run: rm -rf node_modules
       - name: 'Install dependencies, no dev'
         run: npm ci --omit=dev
-      # TODO: Create and publish Npm pack.
       # Setup necessary info to create tag
       - name: Set version variable with v, for use in tag and release
         run: 'echo "RELEASE_TAG=v$(npm run --silent sdk-version)" >> $GITHUB_ENV'
@@ -66,3 +65,16 @@ jobs:
             } catch (error) {
               core.setFailed(error.message);
             }
+      # Pack Npm package
+      -name: Create NPM package
+       run: 'mkdir out && npm pack --pack-destination="./out"'
+      # Add Npm pack to Github Release Assets
+      - name: Upload to GitHub release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ env.RELEASE_TAG }}
+        run: |
+          gh release upload ${{ env.RELEASE_TAG }} out/* --clobber
+      # Publish Npm package
+      #- name: Publish Npm package
+      #  run: npm publish
