@@ -66,8 +66,8 @@ jobs:
               core.setFailed(error.message);
             }
       # Pack Npm package
-      -name: Create NPM package
-       run: 'mkdir out && npm pack --pack-destination="./out"'
+      - name: Create NPM package
+        run: 'mkdir out && npm pack --pack-destination="./out"'
       # Add Npm pack to Github Release Assets
       - name: Upload to GitHub release
         env:
