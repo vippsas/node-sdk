@@ -76,5 +76,5 @@ jobs:
         run: |
           gh release upload ${{ env.RELEASE_TAG }} out/* --clobber
       # Publish Npm package
-      #- name: Publish Npm package
-      #  run: npm publish
+      - name: Publish Npm package
+        run: npm publish --dry-run
