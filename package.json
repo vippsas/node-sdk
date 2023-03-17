@@ -1,6 +1,14 @@
 {
   "name": "@vippsno/vipps-sdk",
   "version": "0.9.0",
+  "homepage": "https://github.com/vippsas/vipps-node",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/vippsas/vipps-node"
+  },
+  "bugs": {
+    "url": "https://github.com/vippsas/vipps-node/issues"
+  },
   "engines": {
     "node": ">=14.x.x",
     "npm": ">=7.x.x"
@@ -8,14 +16,15 @@
   "description": "Vipps SDK",
   "main": "lib/index.js",
   "files": [
-    "lib"
+    "lib",
+    "LICENSE"
   ],
   "scripts": {
     "test": "jest",
     "build": "tsc --build",
-    "autogen:checkout": "npx swagger-typescript-api -p \"https://vippsas.github.io/vipps-developer-docs/redocusaurus/checkout-swagger-id.yaml\"  -o ./src/@types -n checkout.types.ts --no-client",
-    "autogen:epayment": "npx swagger-typescript-api -p \"https://vippsas.github.io/vipps-developer-docs/redocusaurus/epayment-swagger-id.yaml\"  -o ./src/@types -n epayment.types.ts --no-client",
-    "autogen:access-token": "npx swagger-typescript-api -p \"https://vippsas.github.io/vipps-developer-docs/redocusaurus/access-token-swagger-id.yaml\"  -o ./src/@types -n access-token.types.ts --no-client",
+    "autogen:checkout": "swagger-typescript-api -p \"https://vippsas.github.io/vipps-developer-docs/redocusaurus/checkout-swagger-id.yaml\"  -o ./src/@types -n checkout.types.ts --no-client",
+    "autogen:epayment": "swagger-typescript-api -p \"https://vippsas.github.io/vipps-developer-docs/redocusaurus/epayment-swagger-id.yaml\"  -o ./src/@types -n epayment.types.ts --no-client",
+    "autogen:access-token": "swagger-typescript-api -p \"https://vippsas.github.io/vipps-developer-docs/redocusaurus/access-token-swagger-id.yaml\"  -o ./src/@types -n access-token.types.ts --no-client",
     "audit": "npm audit --registry=https://registry.npmjs.org/",
     "lint": "eslint src --color",
     "prettier": "prettier -c src",
@@ -23,7 +32,7 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "@types/async-retry": "^1.4.5",
     "@types/jest": "^29.4.0",
