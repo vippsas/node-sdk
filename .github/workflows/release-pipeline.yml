@@ -24,6 +24,11 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: npm
 
+      - name: Test npm login
+        run: npm login --registry=https://registry.npmjs.org
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
+
       - name: Publish Npm test
         run: npm whoami
         env:
