@@ -30,12 +30,6 @@
     "prettier": "prettier -c src",
     "sdk-version": "echo $npm_package_version"
   },
-  "publishConfig": {
-    "access": "public",
-    "registry": "https://registry.npmjs.org/",
-    "main": "lib/index.js",
-    "types": "lib/index.d.ts"
-  },
   "keywords": [],
   "author": "",
   "license": "MIT",
