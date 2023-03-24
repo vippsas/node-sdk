@@ -25,7 +25,7 @@ jobs:
           cache: npm
 
       - name: Create .npmrc
-        run: echo "//https://registry.npmjs.org:8080/:_authToken=${{secrets.NPM_ACCESS_TOKEN}}" > ~/.npmrc
+        run: echo "//registry.npmjs.org:8080/:_authToken=${{secrets.NPM_ACCESS_TOKEN}}\n@vipps-roarmjelde:registry=https://registry.npmjs.org" > ./.npmrc
 
       - name: Npm whoami
         run: npm whoami --registry=https://registry.npmjs.org
