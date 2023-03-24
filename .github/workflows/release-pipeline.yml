@@ -2,7 +2,7 @@ name: Release
 
 on:
   push:
-    branches: ['main', 'fix-npm-logon']
+    branches: ['main']
 
 jobs:
   release:
@@ -24,14 +24,6 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: npm
           registry-url: 'https://registry.npmjs.org'
-
-      # - name: Create .npmrc
-      #   run: echo "//registry.npmjs.org:8080/:_authToken=${{secrets.NPM_ACCESS_TOKEN}}\n@vipps-roarmjelde:registry=https://registry.npmjs.org" > ./.npmrc
-
-      - name: Npm whoami
-        run: npm whoami --registry=https://registry.npmjs.org
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
 
       - name: 'Install dependencies'
         run: npm ci
