@@ -24,7 +24,10 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: npm
 
-      - name: Publish Npm whoami
+      - name: Create .npmrc
+        run: echo "//https://registry.npmjs.org:8080/:_authToken=${{secrets.NPM_ACCESS_TOKEN}}" > ~/.npmrc
+
+      - name: Npm whoami
         run: npm whoami --registry=https://registry.npmjs.org
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
