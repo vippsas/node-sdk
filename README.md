@@ -26,41 +26,41 @@ Example showing configuration and calling a method which creates a Checkout sess
 import Vipps from '@vippsno/vipps-node'
 
 const vipps = new Vipps({
-    pluginName: 'My plugin name',
-    pluginVersion: '1.0.0',
-    clientId: 'client-id-from-vipps-portal',
-    clientSecret: 'client-secret-form-vipps-portal',
-    subscriptionKey: 'subscription-key-from-vipps-portal',
-    merchantSerialNumber: 'merchant-serial-number-from-vipps-portal',
+  pluginName: 'My plugin name',
+  pluginVersion: '1.0.0',
+  clientId: 'client-id-from-vipps-portal',
+  clientSecret: 'client-secret-form-vipps-portal',
+  subscriptionKey: 'subscription-key-from-vipps-portal',
+  merchantSerialNumber: 'merchant-serial-number-from-vipps-portal',
 });
 
 const vippsCheckoutSession = await vipps.checkout.createSession({
-    merchantInfo: {
-        callbackUrl: 'https://exmaple.com/vipps/payment-callback',
-        returnUrl: 'https://example.com/vipps',
-        callbackAuthorizationToken: 'secret-token-to-verify-callback',
+  merchantInfo: {
+    callbackUrl: 'https://exmaple.com/vipps/payment-callback',
+    returnUrl: 'https://example.com/vipps',
+    callbackAuthorizationToken: 'secret-token-to-verify-callback',
+  },
+  transaction: {
+    amount: {
+      currency: 'NOK',
+      value: 1000
     },
-    transaction: {
+    reference: 'order-id-123',
+  },
+  logistics: {
+    dynamicOptionsCallback: 'https://exmaple.com/vipps/payment-callback',
+    fixedOptions: [
+      {
+        brand: 'POSTEN',
         amount: {
-            currency: 'NOK',
-            value: 1000
+          currency: 'NOK',
+          value: 100
         },
-        reference: 'order-id-123',
-    },
-    logistics: {
-        dynamicOptionsCallback: 'https://exmaple.com/vipps/payment-callback',
-        fixedOptions: [
-            {
-                brand: 'POSTEN',
-                amount: {
-                    currency: 'NOK',
-                    value: 100
-                },
-                id: 'shipping-option-1',
-                description: 'Pakke levert på døren'
-            }
-        ]
-    }
+        id: 'shipping-option-1',
+        description: 'Pakke levert på døren'
+      }
+    ]
+  }
 });
 ```
 
@@ -80,6 +80,14 @@ ePayment exposes the following methods:
 - `capturePayment`
 - `refundPayment`
 - `forceApprovePayment`
+
+### CommonJS
+
+The SDK supports both ESM and CommonJs. To use the SDK in a CommonJS environment, simply import the default export:
+
+```javascript
+const Vipps = require('@vippsno/vipps-node').default;
+```
 
 ## Error handling
 

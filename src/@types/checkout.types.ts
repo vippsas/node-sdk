@@ -10,7 +10,7 @@
  */
 
 /** Amounts are specified in minor units. For Norwegian kroner (NOK) that means 1 kr = 100 øre. Example: 499 kr = 49900 øre. */
-export interface Amount {
+export interface CheckoutAmount {
   /**
    * Must be in Minor Units. The smallest unit of a currency. Example 100 NOK = 10000.
    * @format int32
@@ -22,7 +22,7 @@ export interface Amount {
 }
 
 /** Defines the details of the billing */
-export interface BillingDetails {
+export interface CheckoutBillingDetails {
   /** Example: "Ada" */
   firstName: string;
   /** Example: "Lovelace" */
@@ -43,17 +43,17 @@ export interface BillingDetails {
 
 export interface CheckoutConfig {
   /** If customer is physically present: "customer_present", otherwise: "customer_not_present". */
-  customerInteraction?: CustomerInteraction | null;
+  customerInteraction?: CheckoutCustomerInteraction | null;
   /** Adjust the fields and values present in the Checkout. */
-  elements?: Elements | null;
+  elements?: CheckoutElements | null;
   /** Countries to allow during session */
-  countries?: Countries | null;
+  countries?: CheckoutCountries | null;
   /** One of the following: "WEB_REDIRECT", "NATIVE_REDIRECT". To ensure having a return URL based on an app URL, use "NATIVE_REDIRECT". */
-  userFlow?: UserFlow | null;
+  userFlow?: CheckoutUserFlow | null;
   /** Requires the customer to consent to share their email and openid sub with the merchant to be able to make a wallet payment (default: false). */
   requireUserInfo?: boolean | null;
   /** If used, displays a checkbox that can be used to ask for extra consent. */
-  customConsent?: CustomConsent | null;
+  customConsent?: CheckoutCustomConsent | null;
   /** Decides whether the order lines are displayed as a shopping cart context in the checkout. */
   showOrderSummary?: boolean | null;
 }
@@ -70,31 +70,31 @@ export interface CheckoutSessionThirdPartyInformationHeaders {
   'vipps-System-Plugin-Version': string;
 }
 
-export interface Countries {
+export interface CheckoutCountries {
   /** List of allowed countries in ISO-3166 Alpha 2. If specified, the customer will only be able to select these countries. Example ["NO", "SE", "DK"] */
   supported: string[];
 }
 
 /** If used, displays a checkbox that can be used to ask for extra consent. */
-export interface CustomConsent {
+export interface CheckoutCustomConsent {
   /** Text displayed next to the checkbox. This text can contain up to one link in markdown format like this: [linkText](https://example.com) */
   text: string;
   /** Whether box has to be checked to complete the checkout. */
   required: boolean;
 }
 
-export enum CustomerInteraction {
+export enum CheckoutCustomerInteraction {
   CUSTOMER_PRESENT = 'CUSTOMER_PRESENT',
   CUSTOMER_NOT_PRESENT = 'CUSTOMER_NOT_PRESENT',
 }
 
-export enum Elements {
+export enum CheckoutElements {
   Full = 'Full',
   PaymentAndContactInfo = 'PaymentAndContactInfo',
   PaymentOnly = 'PaymentOnly',
 }
 
-export enum ExternalSessionState {
+export enum CheckoutExternalSessionState {
   SessionCreated = 'SessionCreated',
   PaymentInitiated = 'PaymentInitiated',
   SessionExpired = 'SessionExpired',
@@ -103,7 +103,7 @@ export enum ExternalSessionState {
 }
 
 /** Configuration required to enable Helthjem logistics options */
-export interface Helthjem {
+export interface CheckoutHelthjem {
   /**
    * The Username provided to you by Helthjem
    * @minLength 1
@@ -121,8 +121,8 @@ export interface Helthjem {
   shopId: number;
 }
 
-export type HelthjemLogisticsOption = LogisticsOptionBase & {
-  type?: HelthjemLogisticsType | null;
+export type CheckoutHelthjemLogisticsOption = CheckoutLogisticsOptionBase & {
+  type?: CheckoutHelthjemLogisticsType | null;
   customType?: string | null;
   /**
    * @default "HELTHJEM"
@@ -131,23 +131,23 @@ export type HelthjemLogisticsOption = LogisticsOptionBase & {
   brand: string;
 };
 
-export enum HelthjemLogisticsType {
+export enum CheckoutHelthjemLogisticsType {
   HOME_DELIVERY = 'HOME_DELIVERY',
   PICKUP_POINT = 'PICKUP_POINT',
 }
 
 /** Request to set up a Checkout session */
-export interface InitiateSessionRequest {
-  merchantInfo: PaymentMerchantInfo;
-  transaction: PaymentTransaction;
-  logistics?: Logistics | null;
+export interface CheckoutInitiateSessionRequest {
+  merchantInfo: CheckoutPaymentMerchantInfo;
+  transaction: CheckoutPaymentTransaction;
+  logistics?: CheckoutLogistics | null;
   /** If customer information is known, it can be prefilled. */
-  prefillCustomer?: PrefillCustomer | null;
+  prefillCustomer?: CheckoutPrefillCustomer | null;
   configuration?: CheckoutConfig | null;
 }
 
 /** Response from initiating a session. */
-export interface InitiateSessionResponse {
+export interface CheckoutInitiateSessionResponse {
   /** The token to be provided to Checkout. Example: "eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJzZXNzaW9uSWQiOiJUdHF1Y3I5ZDdKRHZ6clhYWTU1WUZRIiwic2Vzc2lvblBvbGxpbmdVUkwiOiJodHRwOi8vbG9jYWxob3N0OjUwMDAvY2hlY2tvdXQvc2Vzc2lvbi9UdHF1Y3I5ZDdKRHZ6clhYWTU1WUZRIn0.ln7VzZkNvUGu0HhyA_a8IbXQN35WhDBmCYC9IvyYL-I" */
   token: string;
   /** The URL of the checkout frontend. Example: "https://vippscheckout.vipps.no/v1/". */
@@ -157,7 +157,7 @@ export interface InitiateSessionResponse {
 }
 
 /** Configuration required to enable Instabox logistics options */
-export interface Instabox {
+export interface CheckoutInstabox {
   /**
    * The client id provided to you by Instabox
    * @minLength 1
@@ -171,7 +171,7 @@ export interface Instabox {
 }
 
 /** Details needed to book an instabox order */
-export interface InstaboxBookingDetails {
+export interface CheckoutInstaboxBookingDetails {
   /** Identifies when the delivery options were fetched */
   availabilityToken: string;
   /** Identifies the service (For example "EXPRESS") */
@@ -180,8 +180,8 @@ export interface InstaboxBookingDetails {
   sortCode: string;
 }
 
-export type InstaboxLogisticsOption = LogisticsOptionBase & {
-  type?: InstaboxLogisticsType | null;
+export type CheckoutInstaboxLogisticsOption = CheckoutLogisticsOptionBase & {
+  type?: CheckoutInstaboxLogisticsType | null;
   customType?: string | null;
   /**
    * @default "INSTABOX"
@@ -190,18 +190,18 @@ export type InstaboxLogisticsOption = LogisticsOptionBase & {
   brand: string;
 };
 
-export enum InstaboxLogisticsType {
+export enum CheckoutInstaboxLogisticsType {
   HOME_DELIVERY = 'HOME_DELIVERY',
   PICKUP_POINT = 'PICKUP_POINT',
 }
 
-export interface Integrations {
+export interface CheckoutIntegrations {
   /** Configuration required to enable Porterbuddy logistics options */
-  porterbuddy?: Porterbuddy | null;
+  porterbuddy?: CheckoutPorterbuddy | null;
   /** Configuration required to enable Instabox logistics options */
-  instabox?: Instabox | null;
+  instabox?: CheckoutInstabox | null;
   /** Configuration required to enable Helthjem logistics options */
-  helthjem?: Helthjem | null;
+  helthjem?: CheckoutHelthjem | null;
 }
 
 /**
@@ -211,36 +211,43 @@ export interface Integrations {
  * If the callback does not resolve successfully within 8 seconds, returns null or an empty list the system will fall back to static options.
  * If no fallback options are provided, the user will be presented with an error and will not be able to continue with the checkout.
  */
-export interface Logistics {
+export interface CheckoutLogistics {
   /** Merchant's Callback URL for providing dynamic logistics options based on customer address. Example: "https://example.com/vipps/dynamiclogisticsoption". Can not be used with AddressFields set to false. */
   dynamicOptionsCallback?: string | null;
   /** Fixed list of logistics options. */
   fixedOptions?:
     | (
-        | PostenLogisticsOption
-        | PostnordLogisticsOption
-        | PorterbuddyLogisticsOption
-        | InstaboxLogisticsOption
-        | HelthjemLogisticsOption
-        | OtherLogisticsOption
+        | CheckoutPostenLogisticsOption
+        | CheckoutPostnordLogisticsOption
+        | CheckoutPorterbuddyLogisticsOption
+        | CheckoutInstaboxLogisticsOption
+        | CheckoutHelthjemLogisticsOption
+        | CheckoutOtherLogisticsOption
       )[]
     | null;
   /** Some optional checkout features require carrier-specific configuration. Can not be used with AddressFields set to false. */
-  integrations?: Integrations | null;
+  integrations?: CheckoutIntegrations | null;
 }
 
-export interface LogisticsOptionBase {
+export interface CheckoutLogisticsOptionBase {
   /** Amounts are specified in minor units. For Norwegian kroner (NOK) that means 1 kr = 100 øre. Example: 499 kr = 49900 øre. */
-  amount: Amount;
+  amount: CheckoutAmount;
+  /**
+   * @minLength 1
+   * @maxLength 200
+   */
   id: string;
-  /** @format int32 */
+  /**
+   * @format int32
+   * @min 0
+   */
   priority: number;
   isDefault: boolean;
   description?: string | null;
 }
 
 /** Headers required to retrieve an access token. */
-export interface MerchantAuthInfoHeaders {
+export interface CheckoutMerchantAuthInfoHeaders {
   /**
    * Client ID for the merchant (the "username"). Found in the Vipps portal. Example: "fb492b5e-7907-4d83-bc20-c7fb60ca35de".
    * @minLength 1
@@ -264,7 +271,7 @@ export interface MerchantAuthInfoHeaders {
 }
 
 /** Information about the customer address used when retrieving dynamic logistics options. */
-export interface MerchantLogisticsCallbackRequestBody {
+export interface CheckoutMerchantLogisticsCallbackRequestBody {
   /** Example: "Robert Levins gate 5" */
   streetAddress: string;
   /** Example: "0154" */
@@ -275,7 +282,7 @@ export interface MerchantLogisticsCallbackRequestBody {
   country: string;
 }
 
-export interface OrderBottomLine {
+export interface CheckoutOrderBottomLine {
   /**
    * The currency identifier according to ISO 4217. Example: "NOK".
    * @minLength 3
@@ -296,7 +303,7 @@ export interface OrderBottomLine {
   terminalId?: string | null;
 }
 
-export interface OrderLine {
+export interface CheckoutOrderLine {
   /**
    * The name of the product in the order line.
    * @minLength 1
@@ -335,7 +342,7 @@ export interface OrderLine {
    */
   taxPercentage: number;
   /** If no quantity info is provided the order line will default to 1 pcs. */
-  unitInfo?: OrderUnitInfo | null;
+  unitInfo?: CheckoutOrderUnitInfo | null;
   /**
    * Total discount for the order line. Must be in Minor Units. The smallest unit of a currency. Example 100 NOK = 10000.
    * @format int64
@@ -349,17 +356,17 @@ export interface OrderLine {
   isShipping?: boolean | null;
 }
 
-export interface OrderSummary {
+export interface CheckoutOrderSummary {
   /**
    * The order lines contain descriptions of each item present in the order.
    * @minItems 1
    */
-  orderLines: OrderLine[];
+  orderLines: CheckoutOrderLine[];
   /** Contains information regarding the order as a whole. */
-  orderBottomLine: OrderBottomLine;
+  orderBottomLine: CheckoutOrderBottomLine;
 }
 
-export interface OrderUnitInfo {
+export interface CheckoutOrderUnitInfo {
   /**
    * Total price per unit, including tax and excluding discount. Must be in Minor Units. The smallest unit of a currency. Example 100 NOK = 10000.
    * @format int64
@@ -369,10 +376,14 @@ export interface OrderUnitInfo {
   /** Quantity given as a integer or fraction (only for cosmetics). */
   quantity: string;
   /** Available units for quantity. Will default to PCS if not set. */
-  quantityUnit: QuantityUnit;
+  quantityUnit: CheckoutQuantityUnit;
 }
 
-export type OtherLogisticsOption = LogisticsOptionBase & {
+export type CheckoutOtherLogisticsOption = CheckoutLogisticsOptionBase & {
+  /**
+   * @minLength 1
+   * @maxLength 200
+   */
   title: string;
   /**
    * @default "OTHER"
@@ -381,7 +392,7 @@ export type OtherLogisticsOption = LogisticsOptionBase & {
   brand: string;
 };
 
-export interface PaymentMerchantInfo {
+export interface CheckoutPaymentMerchantInfo {
   /** Complete URL for receiving callbacks. Example: "https://exmaple.com/vipps/payment-callback/ */
   callbackUrl: string;
   /**
@@ -395,23 +406,22 @@ export interface PaymentMerchantInfo {
   termsAndConditionsUrl?: string | null;
 }
 
-export enum PaymentMethod {
+export enum CheckoutPaymentMethod {
   Wallet = 'Wallet',
   Card = 'Card',
-  Swish = 'Swish',
 }
 
-export enum PaymentState {
+export enum CheckoutPaymentState {
   CREATED = 'CREATED',
   AUTHORIZED = 'AUTHORIZED',
   TERMINATED = 'TERMINATED',
 }
 
-export interface PaymentTransaction {
+export interface CheckoutPaymentTransaction {
   /** Amounts are specified in minor units. For Norwegian kroner (NOK) that means 1 kr = 100 øre. Example: 499 kr = 49900 øre. */
-  amount: Amount;
+  amount: CheckoutAmount;
   /**
-   * The merchant's unique reference for the transaction. Also known as OrderId. Example: "acme-shop-123-order123abc". See https://vippsas.github.io/vipps-developer-docs/docs/vipps-developers/common-topics/orderid
+   * The merchant's unique reference for the transaction. Also known as OrderId. Example: "acme-shop-123-order123abc". See https://developer.vippsmobilepay.com/docs/vipps-developers/common-topics/orderid
    * @minLength 8
    * @maxLength 50
    * @pattern ^[-a-zA-Z0-9]*$
@@ -424,11 +434,11 @@ export interface PaymentTransaction {
    */
   paymentDescription: string;
   /** Contain descriptions of each item present in the order, and an order bottom line for information regarding the order as a whole. */
-  orderSummary?: OrderSummary | null;
+  orderSummary?: CheckoutOrderSummary | null;
 }
 
 /** The pickup point the customer selected . */
-export interface PickupPoint {
+export interface CheckoutPickupPoint {
   /** Pickup point id provided by the carrier. Example: 121648 */
   id: string;
   /** Pickup point name. Example: Extra Eiganes */
@@ -444,11 +454,11 @@ export interface PickupPoint {
   /** Pickup point's opening hours. Example: Man-Søn: 1000-2000 */
   openingHours?: string[] | null;
   /** Instabox details */
-  instabox?: InstaboxBookingDetails | null;
+  instabox?: CheckoutInstaboxBookingDetails | null;
 }
 
 /** Configuration required to enable Porterbuddy logistics options */
-export interface Porterbuddy {
+export interface CheckoutPorterbuddy {
   /** The public key provided to you by Porterbuddy */
   publicToken: string;
   /**
@@ -457,11 +467,11 @@ export interface Porterbuddy {
    */
   apiKey: string;
   /** Information about the sender */
-  origin: PorterbuddyOrigin;
+  origin: CheckoutPorterbuddyOrigin;
 }
 
-export type PorterbuddyLogisticsOption = LogisticsOptionBase & {
-  type?: PorterbuddyLogisticsType | null;
+export type CheckoutPorterbuddyLogisticsOption = CheckoutLogisticsOptionBase & {
+  type?: CheckoutPorterbuddyLogisticsType | null;
   customType?: string | null;
   /**
    * @default "PORTERBUDDY"
@@ -470,12 +480,12 @@ export type PorterbuddyLogisticsOption = LogisticsOptionBase & {
   brand: string;
 };
 
-export enum PorterbuddyLogisticsType {
+export enum CheckoutPorterbuddyLogisticsType {
   HOME_DELIVERY = 'HOME_DELIVERY',
 }
 
 /** Details about the sender of the Porterbuddy parcels */
-export interface PorterbuddyOrigin {
+export interface CheckoutPorterbuddyOrigin {
   /** The name of your store */
   name: string;
   /** Your email address where Porterbuddy booking confirmation will be sent */
@@ -483,10 +493,10 @@ export interface PorterbuddyOrigin {
   /** Your phone number where Porterbuddy may send you important messages. Format must be MSISDN (including country code). Example: "4791234567" */
   phoneNumber: string;
   /** Your address where Porterbuddy will pick up the parcels */
-  address: PorterbuddyOriginAddress;
+  address: CheckoutPorterbuddyOriginAddress;
 }
 
-export interface PorterbuddyOriginAddress {
+export interface CheckoutPorterbuddyOriginAddress {
   /** Example: "Robert Levins gate 5" */
   streetAddress: string;
   /** Example: "0154" */
@@ -497,8 +507,8 @@ export interface PorterbuddyOriginAddress {
   country: string;
 }
 
-export type PostenLogisticsOption = LogisticsOptionBase & {
-  type?: PostenLogisticsType | null;
+export type CheckoutPostenLogisticsOption = CheckoutLogisticsOptionBase & {
+  type?: CheckoutPostenLogisticsType | null;
   customType?: string | null;
   /**
    * @default "POSTEN"
@@ -507,14 +517,14 @@ export type PostenLogisticsOption = LogisticsOptionBase & {
   brand: string;
 };
 
-export enum PostenLogisticsType {
+export enum CheckoutPostenLogisticsType {
   MAILBOX = 'MAILBOX',
   PICKUP_POINT = 'PICKUP_POINT',
   HOME_DELIVERY = 'HOME_DELIVERY',
 }
 
-export type PostnordLogisticsOption = LogisticsOptionBase & {
-  type?: PostnordLogisticsType | null;
+export type CheckoutPostnordLogisticsOption = CheckoutLogisticsOptionBase & {
+  type?: CheckoutPostnordLogisticsType | null;
   customType?: string | null;
   /**
    * @default "POSTNORD"
@@ -523,7 +533,7 @@ export type PostnordLogisticsOption = LogisticsOptionBase & {
   brand: string;
 };
 
-export enum PostnordLogisticsType {
+export enum CheckoutPostnordLogisticsType {
   PICKUP_POINT = 'PICKUP_POINT',
   HOME_DELIVERY = 'HOME_DELIVERY',
 }
@@ -534,7 +544,7 @@ export enum PostnordLogisticsType {
  * If any of the customer information is invalid such as the phone number,
  * the customer will be prompted to input new user information.
  */
-export interface PrefillCustomer {
+export interface CheckoutPrefillCustomer {
   /** Example: "Ada" */
   firstName: string;
   /** Example: "Lovelace" */
@@ -553,7 +563,7 @@ export interface PrefillCustomer {
   country: string;
 }
 
-export enum QuantityUnit {
+export enum CheckoutQuantityUnit {
   PCS = 'PCS',
   KG = 'KG',
   KM = 'KM',
@@ -562,32 +572,32 @@ export enum QuantityUnit {
 }
 
 /** Defines the details of the payment. */
-export interface ResponsePaymentDetails {
-  amount: Amount;
-  state: PaymentState;
-  aggregate?: TransactionAggregate | null;
+export interface CheckoutResponsePaymentDetails {
+  amount: CheckoutAmount;
+  state: CheckoutPaymentState;
+  aggregate?: CheckoutTransactionAggregate | null;
 }
 
 /** Session information */
-export interface SessionResponse {
+export interface CheckoutSessionResponse {
   /** The Id of the session. Example: "v52EtjZriRmGiKiAKHByK2". */
   sessionId: string;
   /** The merchant's serial number. Example: "123456" */
   merchantSerialNumber?: string | null;
-  /** The merchant's unique reference for the transaction. Also known as OrderId. Example: "acme-shop-123-order123abc". See https://vippsas.github.io/vipps-developer-docs/docs/vipps-developers/common-topics/orderid */
+  /** The merchant's unique reference for the transaction. Also known as OrderId. Example: "acme-shop-123-order123abc". See https://developer.vippsmobilepay.com/docs/vipps-developers/common-topics/orderid */
   reference: string;
   /** The state of the session. Example: "SessionStarted". The state of the payment is in PaymentDetails.State. */
-  sessionState: ExternalSessionState;
-  paymentMethod?: PaymentMethod | null;
-  paymentDetails?: ResponsePaymentDetails | null;
-  userInfo?: UserInfo | null;
-  shippingDetails?: ShippingDetails | null;
-  billingDetails?: BillingDetails | null;
+  sessionState: CheckoutExternalSessionState;
+  paymentMethod?: CheckoutPaymentMethod | null;
+  paymentDetails?: CheckoutResponsePaymentDetails | null;
+  userInfo?: CheckoutUserInfo | null;
+  shippingDetails?: CheckoutShippingDetails | null;
+  billingDetails?: CheckoutBillingDetails | null;
   customConsentProvided?: boolean | null;
 }
 
 /** Defines the details of the shipping */
-export interface ShippingDetails {
+export interface CheckoutShippingDetails {
   /** Example: "Ada" */
   firstName?: string | null;
   /** Example: "Lovelace" */
@@ -606,24 +616,27 @@ export interface ShippingDetails {
   country?: string | null;
   /** Id of the shipping method. Example: "123abc" */
   shippingMethodId?: string | null;
-  pickupPoint?: PickupPoint | null;
+  pickupPoint?: CheckoutPickupPoint | null;
 }
 
 /** Defines the details of the transaction */
-export interface TransactionAggregate {
-  cancelledAmount?: Amount | null;
-  capturedAmount?: Amount | null;
-  refundedAmount?: Amount | null;
-  authorizedAmount?: Amount | null;
+export interface CheckoutTransactionAggregate {
+  cancelledAmount?: CheckoutAmount | null;
+  capturedAmount?: CheckoutAmount | null;
+  refundedAmount?: CheckoutAmount | null;
+  authorizedAmount?: CheckoutAmount | null;
 }
 
-export enum UserFlow {
+export enum CheckoutUserFlow {
   WEB_REDIRECT = 'WEB_REDIRECT',
   NATIVE_REDIRECT = 'NATIVE_REDIRECT',
 }
 
-/** Data from the UserInfo endpoint. Will only be present if UserInfo flow is used. */
-export interface UserInfo {
+/**
+ * Data from the [Userinfo endpoint](https://developer.vippsmobilepay.com/api/userinfo#operation/getUserinfo).
+ * This will only be present if the UserInfo flow is used.
+ */
+export interface CheckoutUserInfo {
   /** The openid sub that uniquely identifies a Vipps user. */
   sub: string;
   /** Example: "user@example.com" */

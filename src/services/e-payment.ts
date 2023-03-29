@@ -1,8 +1,20 @@
 import { OutgoingHttpHeaders } from 'node:http';
 import { v4 as uuidv4 } from 'uuid';
-import { get, post } from '../utils/http-request';
-import { AccessTokenClient } from '../infrastructure/access-token-client';
-import * as types from '../@types';
+
+import {
+  EPaymentCaptureModificationRequest,
+  EPaymentCreatePaymentRequest,
+  EPaymentCreatePaymentResponse,
+  EPaymentForceApprove,
+  EPaymentGetPaymentResponse,
+  EPaymentModificationResponse,
+  EPaymentPaymentEvent,
+  EPaymentReference,
+  EPaymentRefundModificationRequest,
+  InternalVippsConfiguration,
+} from '../@types';
+import { AccessTokenClient } from '../infrastructure';
+import { get, post } from '../utils';
 
 export class EPayment {
   private headers: OutgoingHttpHeaders;
@@ -10,9 +22,10 @@ export class EPayment {
   private vippsHostname: string;
   private accessTokenClient: AccessTokenClient;
 
-  constructor(configuration: types.InternalVippsConfiguration) {
+  constructor(configuration: InternalVippsConfiguration) {
     this.ePaymentPath = '/epayment/v1/payments';
-    this.vippsHostname = configuration.useTestMode ? 'apitest.vipps.no' : 'api.vipps.no';
+    this.vippsHostname =
+      process.env.VIPPS_HOSTNAME ?? configuration.useTestMode ? 'https://apitest.vipps.no' : 'https://api.vipps.no';
     this.headers = {
       'Content-type': 'application/json; charset="utf-8"',
       'Ocp-Apim-Subscription-Key': configuration.subscriptionKey,
@@ -32,10 +45,10 @@ export class EPayment {
     );
   }
 
-  async createPayment(requestData: types.EPayment.CreatePaymentRequest): Promise<types.EPayment.CreatePaymentResponse> {
+  async createPayment(requestData: EPaymentCreatePaymentRequest): Promise<EPaymentCreatePaymentResponse> {
     const accessToken = await this.accessTokenClient.get();
     const idempotencyKey = uuidv4();
-    return post<types.EPayment.CreatePaymentRequest, types.EPayment.CreatePaymentResponse>(
+    return post<EPaymentCreatePaymentRequest, EPaymentCreatePaymentResponse>(
       this.vippsHostname,
       this.ePaymentPath,
       { ...this.headers, 'Idempotency-Key': idempotencyKey, Authorization: `Bearer ${accessToken}` },
@@ -43,43 +56,39 @@ export class EPayment {
     );
   }
 
-  async getPayment(reference: types.EPayment.Reference): Promise<types.EPayment.GetPaymentResponse> {
+  async getPayment(reference: EPaymentReference): Promise<EPaymentGetPaymentResponse> {
     const accessToken = await this.accessTokenClient.get();
-    return get<types.EPayment.GetPaymentResponse>(this.vippsHostname, `${this.ePaymentPath}/${reference}`, {
+    return get<EPaymentGetPaymentResponse>(this.vippsHostname, `${this.ePaymentPath}/${reference}`, {
       ...this.headers,
       Authorization: `Bearer ${accessToken}`,
     });
   }
 
-  async getPaymentEventLog(reference: types.EPayment.Reference): Promise<types.EPayment.PaymentEvent[]> {
+  async getPaymentEventLog(reference: EPaymentReference): Promise<EPaymentPaymentEvent[]> {
     const accessToken = await this.accessTokenClient.get();
-    return get<types.EPayment.PaymentEvent[]>(this.vippsHostname, `${this.ePaymentPath}/${reference}/events`, {
+    return get<EPaymentPaymentEvent[]>(this.vippsHostname, `${this.ePaymentPath}/${reference}/events`, {
       ...this.headers,
       Authorization: `Bearer ${accessToken}`,
     });
   }
 
-  async cancelPayment(reference: types.EPayment.Reference): Promise<types.EPayment.ModificationResponse> {
+  async cancelPayment(reference: EPaymentReference): Promise<EPaymentModificationResponse> {
     const accessToken = await this.accessTokenClient.get();
     const idempotencyKey = uuidv4();
-    return post<void, types.EPayment.ModificationResponse>(
-      this.vippsHostname,
-      `${this.ePaymentPath}/${reference}/cancel`,
-      {
-        ...this.headers,
-        'Idempotency-Key': idempotencyKey,
-        Authorization: `Bearer ${accessToken}`,
-      },
-    );
+    return post<void, EPaymentModificationResponse>(this.vippsHostname, `${this.ePaymentPath}/${reference}/cancel`, {
+      ...this.headers,
+      'Idempotency-Key': idempotencyKey,
+      Authorization: `Bearer ${accessToken}`,
+    });
   }
 
   async capturePayment(
-    reference: types.EPayment.Reference,
-    requestData: types.EPayment.CaptureModificationRequest,
-  ): Promise<types.EPayment.ModificationResponse> {
+    reference: EPaymentReference,
+    requestData: EPaymentCaptureModificationRequest,
+  ): Promise<EPaymentModificationResponse> {
     const accessToken = await this.accessTokenClient.get();
     const idempotencyKey = uuidv4();
-    return post<types.EPayment.CaptureModificationRequest, types.EPayment.ModificationResponse>(
+    return post<EPaymentCaptureModificationRequest, EPaymentModificationResponse>(
       this.vippsHostname,
       `${this.ePaymentPath}/${reference}/capture`,
       { ...this.headers, 'Idempotency-Key': idempotencyKey, Authorization: `Bearer ${accessToken}` },
@@ -88,12 +97,12 @@ export class EPayment {
   }
 
   async refundPayment(
-    reference: types.EPayment.Reference,
-    requestData: types.EPayment.RefundModificationRequest,
-  ): Promise<types.EPayment.ModificationResponse> {
+    reference: EPaymentReference,
+    requestData: EPaymentRefundModificationRequest,
+  ): Promise<EPaymentModificationResponse> {
     const accessToken = await this.accessTokenClient.get();
     const idempotencyKey = uuidv4();
-    return post<types.EPayment.CaptureModificationRequest, types.EPayment.ModificationResponse>(
+    return post<EPaymentCaptureModificationRequest, EPaymentModificationResponse>(
       this.vippsHostname,
       `${this.ePaymentPath}/${reference}/refund`,
       { ...this.headers, 'Idempotency-Key': idempotencyKey, Authorization: `Bearer ${accessToken}` },
@@ -101,12 +110,9 @@ export class EPayment {
     );
   }
 
-  async forceApprovePayment(
-    reference: types.EPayment.Reference,
-    requestData?: types.EPayment.ForceApprove,
-  ): Promise<void> {
+  async forceApprovePayment(reference: EPaymentReference, requestData?: EPaymentForceApprove): Promise<void> {
     const accessToken = await this.accessTokenClient.get();
-    return post<types.EPayment.ForceApprove, void>(
+    return post<EPaymentForceApprove, void>(
       this.vippsHostname,
       `/epayment/v1/test/payments/${reference}/approve`,
       {

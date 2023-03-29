@@ -13,7 +13,7 @@
  * Customer
  * Target customer
  */
-export interface Customer {
+export interface EPaymentCustomer {
   /**
    * The phone number of the user paying the transaction with Vipps.
    * Only Norwegian mobile numbers are supported (for now).
@@ -30,9 +30,9 @@ export interface Customer {
 }
 
 /** Amount object */
-export interface Amount {
+export interface EPaymentAmount {
   /** Currency code as defined in ISO 4217. eg NOK for Norwegian kroner. */
-  currency: Currency;
+  currency: EPaymentCurrency;
   /**
    * Integer value of price in the currency's monetary subunit (e.g., Norwegian øre),
    * or monetary unit where applicable (e.g., Japanese YEN). The type of the monetary
@@ -49,7 +49,7 @@ export interface Amount {
  * Currency code as defined in ISO 4217. eg NOK for Norwegian kroner.
  * @example "NOK"
  */
-export enum Currency {
+export enum EPaymentCurrency {
   NOK = 'NOK',
 }
 
@@ -57,18 +57,18 @@ export enum Currency {
  * Create payment request
  * The `CreatePaymentRequest` object.
  */
-export interface CreatePaymentRequest {
+export interface EPaymentCreatePaymentRequest {
   /** Amount object */
-  amount: Amount;
+  amount: EPaymentAmount;
   /**
-   * For special cases. The sales unit must be configured by Vipps.
-   * We strongly recommend using "reserve capture" in all situations.
-   * Default is `false`.
+   * For special cases only. The sales unit must be configured by Vipps to use “direct capture” and directCapture must be set to true in the initiate request.
+   * We strongly recommend using “reserve capture” in all situations, see the FAQ.
+   * The default is false.
    * @default false
    */
   directCapture?: boolean;
   /** Target customer */
-  customer?: Customer;
+  customer?: EPaymentCustomer;
   /**
    * The type of customer interaction that triggers the purchase.
    * `CUSTOMER_PRESENT` means that the customer is physically present at the
@@ -78,11 +78,11 @@ export interface CreatePaymentRequest {
    */
   customerInteraction?: 'CUSTOMER_PRESENT' | 'CUSTOMER_NOT_PRESENT';
   /** Additional compliance data related to the transaction. */
-  industryData?: IndustryData;
-  paymentMethod: PaymentMethod;
-  profile?: ProfileRequest;
+  industryData?: EPaymentIndustryData;
+  paymentMethod: EPaymentPaymentMethod;
+  profile?: EPaymentProfileRequest;
   /** A reference */
-  reference: Reference;
+  reference: EPaymentReference;
   /**
    * The URL the user is returned to after the payment session.
    * The URL has to use the `https://` scheme or a custom URL scheme.
@@ -136,7 +136,7 @@ export interface CreatePaymentRequest {
  * Create payment response
  * The `CreatePaymentResponse` object.
  */
-export interface CreatePaymentResponse {
+export interface EPaymentCreatePaymentResponse {
   /**
    * The URL to which the user is redirected when continuing the payment for `NATIVE_REDIRECT` and `WEB_REDIRECT`.
    * When `userFlow` is `QR`, a link to the QR image (or the target URL) will be returned.
@@ -146,17 +146,17 @@ export interface CreatePaymentResponse {
    */
   redirectUrl?: string;
   /** A reference */
-  reference: Reference;
+  reference: EPaymentReference;
 }
 
 /**
  * Get payment response
  * The `GetPaymentResponse` object.
  */
-export interface GetPaymentResponse {
-  aggregate: Aggregate;
+export interface EPaymentGetPaymentResponse {
+  aggregate: EPaymentAggregate;
   /** Amount object */
-  amount: Amount;
+  amount: EPaymentAmount;
   /**
    * State of the Payment.
    * One of:
@@ -166,11 +166,11 @@ export interface GetPaymentResponse {
    * - AUTHORIZED : User has approved the payment
    * - TERMINATED : Merchant has terminated the payment via the cancelPayment endpoint
    */
-  state: State;
-  paymentMethod: PaymentMethodResponse;
-  profile: ProfileResponse;
+  state: EPaymentState;
+  paymentMethod: EPaymentPaymentMethodResponse;
+  profile: EPaymentProfileResponse;
   /** Reference value for a payment defined by Vipps. */
-  pspReference: PspReference;
+  pspReference: EPaymentPspReference;
   /**
    * The URL you should redirect the user to to continue with the payment.
    * @format uri
@@ -178,16 +178,16 @@ export interface GetPaymentResponse {
    */
   redirectUrl?: string;
   /** A reference */
-  reference: Reference;
+  reference: EPaymentReference;
 }
 
 /** Additional compliance data related to the transaction. */
-export interface IndustryData {
+export interface EPaymentIndustryData {
   /**
    * Airline related data.
    * If present, `passengerName`, `airlineCode`, `airlineDesignatorCode`, and `agencyInvoiceNumber` are all required.
    */
-  airlineData?: AirlineData;
+  airlineData?: EPaymentAirlineData;
 }
 
 /**
@@ -195,7 +195,7 @@ export interface IndustryData {
  * Airline related data.
  * If present, `passengerName`, `airlineCode`, `airlineDesignatorCode`, and `agencyInvoiceNumber` are all required.
  */
-export interface AirlineData {
+export interface EPaymentAirlineData {
   /**
    * Reference number for the invoice, issued by the agency.
    * @minLength 1
@@ -235,33 +235,33 @@ export interface AirlineData {
 }
 
 /** Aggregate */
-export interface Aggregate {
+export interface EPaymentAggregate {
   /** Amount object */
-  authorizedAmount: Amount;
+  authorizedAmount: EPaymentAmount;
   /** Amount object */
-  cancelledAmount: Amount;
+  cancelledAmount: EPaymentAmount;
   /** Amount object */
-  capturedAmount: Amount;
+  capturedAmount: EPaymentAmount;
   /** Amount object */
-  refundedAmount: Amount;
+  refundedAmount: EPaymentAmount;
 }
 
 /** CaptureModificationRequest */
-export interface CaptureModificationRequest {
+export interface EPaymentCaptureModificationRequest {
   /** Amount object */
-  modificationAmount: Amount;
+  modificationAmount: EPaymentAmount;
 }
 
 /** RefundModificationRequest */
-export interface RefundModificationRequest {
+export interface EPaymentRefundModificationRequest {
   /** Amount object */
-  modificationAmount: Amount;
+  modificationAmount: EPaymentAmount;
 }
 
 /** ModificationResponse */
-export interface ModificationResponse {
+export interface EPaymentModificationResponse {
   /** Amount object */
-  amount: Amount;
+  amount: EPaymentAmount;
   /**
    * State of the Payment.
    * One of:
@@ -271,12 +271,12 @@ export interface ModificationResponse {
    * - AUTHORIZED : User has approved the payment
    * - TERMINATED : Merchant has terminated the payment via the cancelPayment endpoint
    */
-  state: State;
-  aggregate: Aggregate;
+  state: EPaymentState;
+  aggregate: EPaymentAggregate;
   /** Reference value for a payment defined by Vipps. */
-  pspReference: PspReference;
+  pspReference: EPaymentPspReference;
   /** A reference */
-  reference: Reference;
+  reference: EPaymentReference;
 }
 
 /**
@@ -287,16 +287,16 @@ export interface ModificationResponse {
  * @pattern ^[a-zA-Z0-9-]{8,50}$
  * @example "reference-string"
  */
-export type Reference = string;
+export type EPaymentReference = string;
 
 /**
  * PspReference
  * Reference value for a payment defined by Vipps.
  */
-export type PspReference = string;
+export type EPaymentPspReference = string;
 
 /** Address */
-export interface Address {
+export interface EPaymentAddress {
   /** @example "Oslo" */
   city: string;
   /**
@@ -320,37 +320,38 @@ export interface Address {
 }
 
 /** Profile */
-export interface ProfileRequest {
+export interface EPaymentProfileRequest {
   /** A space-separated string list of requested user information in accordance with the OpenID Connect specification. */
   scope?: string;
 }
 
 /** Profile */
-export interface ProfileResponse {
+export interface EPaymentProfileResponse {
   /**
    * If `profile.scope` was requested in `createPayment` this value will populate once
-   * `state` is `AUTHORIZED`. This can be used towards the Vipps Login Userinfo endpoint
+   * `state` is `AUTHORIZED`. This can be used towards the
+   * [Userinfo endpoint](https://vippsas.github.io/vipps-developer-docs/api/userinfo#operation/getUserinfo)
    * to fetch requested user data.
    */
   sub?: string;
 }
 
 /** PaymentMethod */
-export interface PaymentMethod {
+export interface EPaymentPaymentMethod {
   /**
    * The paymentMethod type to be performed.
    * `CARD` has to be combined with a `userFlow` of `WEB_REDIRECT`.
    */
-  type: PaymentMethodType;
+  type: EPaymentPaymentMethodType;
 }
 
 /** PaymentMethodResponse */
-export interface PaymentMethodResponse {
+export interface EPaymentPaymentMethodResponse {
   /**
    * The paymentMethod type to be performed.
    * `CARD` has to be combined with a `userFlow` of `WEB_REDIRECT`.
    */
-  type: PaymentMethodType;
+  type: EPaymentPaymentMethodType;
   /**
    * @minLength 6
    * @maxLength 6
@@ -364,25 +365,43 @@ export interface PaymentMethodResponse {
  * `CARD` has to be combined with a `userFlow` of `WEB_REDIRECT`.
  * @example "WALLET"
  */
-export enum PaymentMethodType {
+export enum EPaymentPaymentMethodType {
   WALLET = 'WALLET',
   CARD = 'CARD',
 }
 
 /** PaymentAdjustment */
-export interface PaymentAdjustment {
+export interface EPaymentPaymentAdjustment {
   /** Amount object */
-  modificationAmount: Amount;
+  modificationAmount: EPaymentAmount;
   /** A reference */
-  modificationReference: Reference;
+  modificationReference: EPaymentReference;
+}
+
+/** PaymentEventV2 */
+export interface EPaymentPaymentEventv2 {
+  /** A reference */
+  reference: EPaymentReference;
+  /** Reference value for a payment defined by Vipps. */
+  pspReference: EPaymentPspReference;
+  /** @example "AUTHORIZED" */
+  name: 'CREATED' | 'ABORTED' | 'EXPIRED' | 'CANCELLED' | 'CAPTURED' | 'REFUNDED' | 'AUTHORIZED' | 'TERMINATED';
+  /** Amount object */
+  amount: EPaymentAmount;
+  /** @format date-time */
+  timestamp: string;
+  /** The Idempotency key of the request. */
+  idempotencyKey?: string | null;
+  /** The outcome of the event */
+  success: boolean;
 }
 
 /** PaymentEvent */
-export interface PaymentEvent {
+export interface EPaymentPaymentEvent {
   /** A reference */
-  reference: Reference;
+  reference: EPaymentReference;
   /** Reference value for a payment defined by Vipps. */
-  pspReference: PspReference;
+  pspReference: EPaymentPspReference;
   /** @example "AUTHORIZED" */
   name?: 'CREATED' | 'ABORTED' | 'EXPIRED' | 'CANCELLED' | 'CAPTURED' | 'REFUNDED' | 'AUTHORIZED' | 'TERMINATED';
   /**
@@ -391,7 +410,7 @@ export interface PaymentEvent {
    */
   paymentAction: 'CREATE' | 'ABORT' | 'EXPIRE' | 'CANCEL' | 'CAPTURE' | 'REFUND' | 'AUTHORISE' | 'TERMINATE';
   /** Amount object */
-  amount: Amount;
+  amount: EPaymentAmount;
   /** @format date-time */
   timestamp: string;
   /**
@@ -406,7 +425,7 @@ export interface PaymentEvent {
 }
 
 /** Problem */
-export interface Problem {
+export interface EPaymentProblem {
   /**
    * A URI reference that identifies the problem type.
    * @format uri
@@ -430,7 +449,7 @@ export interface Problem {
  * - AUTHORIZED : User has approved the payment
  * - TERMINATED : Merchant has terminated the payment via the cancelPayment endpoint
  */
-export enum State {
+export enum EPaymentState {
   CREATED = 'CREATED',
   ABORTED = 'ABORTED',
   EXPIRED = 'EXPIRED',
@@ -439,8 +458,8 @@ export enum State {
 }
 
 /** ForceApprove */
-export interface ForceApprove {
+export interface EPaymentForceApprove {
   /** Target customer */
-  customer?: Customer;
+  customer?: EPaymentCustomer;
   token?: string;
 }

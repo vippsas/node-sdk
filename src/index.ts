@@ -1,4 +1,7 @@
-/* eslint-disable import/no-import-module-exports */
 import { Vipps } from './vipps';
 
-module.exports = Vipps;
+export * from './@types';
+export * from './services';
+export * from './infrastructure';
+
+export default Vipps;
