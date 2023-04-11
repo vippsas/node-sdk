@@ -1,5 +1,6 @@
-# vipps-node
-The official Vipps Javascript SDK for the Checkout and Epayment APIs.
+# Vipps Node.js SDK
+
+The official Vipps JavaScript SDK for the Checkout and ePayment APIs.
 
 **Features**
 
@@ -9,9 +10,11 @@ The official Vipps Javascript SDK for the Checkout and Epayment APIs.
 - Idempotency
 
 ## Usage
+
 We recommend inspecting the types for a detailed description of class constructor- and method arguments. The API guidelines for [Checkout](https://vippsas.github.io/vipps-developer-docs/docs/APIs/checkout-api) and [ePayment](https://vippsas.github.io/vipps-developer-docs/docs/APIs/epayment-api) should also be used as reference, e.g. when in doubt about the meaning of property or its allowed values.
 
 Example showing configuration and calling a method which creates a Vipps Checkout session:
+
 ```typescript
 import Vipps from '@vippsno/vipps-node'
 
@@ -57,10 +60,12 @@ const vippsCheckoutSession = await vipps.checkout.createSession({
 The SDK exposes the same operations as for the underlying Checkout and ePayment APIs respective.
 
 Checkout exposes the following methods:
+
 - `createSession`
 - `getSession`
 
 ePayment exposes the following methods:
+
 - `createPayment`
 - `getPayment`
 - `getPaymentEventLog`
@@ -68,7 +73,6 @@ ePayment exposes the following methods:
 - `capturePayment`
 - `refundPayment`
 - `forceApprovePayment`
-
 
 ## Error handling
 
