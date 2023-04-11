@@ -1,5 +1,7 @@
-# vipps-node
-The official Vipps Javascript SDK for the Checkout and Epayment APIs.
+# Vipps SDK
+The official Vipps Node SDK for the Checkout and Epayment APIs.
+
+https://www.npmjs.com/package/@vippsno/vipps-sdk
 
 **Features**
 
