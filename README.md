@@ -4,9 +4,10 @@ pagination_next: null
 pagination_prev: null
 ---
 
-# Node.js SDK
+# Node SDK
+The official Node SDK for the Checkout and Epayment APIs.
 
-The official JavaScript SDK for the Checkout and ePayment APIs.
+https://www.npmjs.com/package/@vippsno/vipps-sdk
 
 ## Features
 
