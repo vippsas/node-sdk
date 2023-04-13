@@ -5,9 +5,11 @@ pagination_prev: null
 ---
 
 # Node SDK
-The official Node SDK for the Checkout and Epayment APIs.
 
-https://www.npmjs.com/package/@vippsno/vipps-sdk
+The official Node SDK for the Checkout and ePayment APIs.
+
+You can install the SDK with NPM as per [Installation](#installation).
+More information about the package can be found on [npmjs.com](https://www.npmjs.com/package/@vippsno/vipps-sdk).
 
 ## Features
 
@@ -15,6 +17,20 @@ https://www.npmjs.com/package/@vippsno/vipps-sdk
 - Authentication
 - Network retries
 - Idempotency
+
+## Installation
+
+NPM:
+
+```sh
+npm i @vippsno/vipps-sdk
+```
+
+Yarn:
+```sh
+yarn add @vippsno/vipps-sdk
+```
+
 
 ## Usage
 
