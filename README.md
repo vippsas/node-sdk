@@ -8,6 +8,8 @@ pagination_prev: null
 
 The official Node SDK for the Checkout and ePayment APIs.
 
+You can download the SDK here:
+
 <https://www.npmjs.com/package/@vippsno/vipps-sdk>
 
 ## Features
