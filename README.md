@@ -26,6 +26,11 @@ NPM:
 npm i @vippsno/vipps-sdk
 ```
 
+Yarn:
+```sh
+yarn add @vippsno/vipps-sdk
+```
+
 
 ## Usage
 
