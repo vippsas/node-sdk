@@ -86,4 +86,5 @@ ePayment exposes the following methods:
 
 ## Error handling
 
-All methods have built-in retry mechanisms, however, there is no guarantee that the call will succeed. Errors might arise for various reasons, including network failure, misconfiguration or temporarily unavailable services. It is recommended to handle potential errors thrown by the SDK
+All methods have built-in retry mechanisms, however, there is no guarantee that the call will succeed. Errors might arise for various reasons, including network failure, misconfiguration or temporarily unavailable services. It is recommended to handle potential errors thrown by the SDK.
+
