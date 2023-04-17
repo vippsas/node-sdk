@@ -29,10 +29,6 @@ jobs:
         run: npm ci
       - name: 'Run build'
         run: npm run build
-      - name: 'Delete node_modules'
-        run: rm -rf node_modules
-      - name: 'Install dependencies, no dev'
-        run: npm ci --omit=dev
       # Setup necessary info to create tag
       - name: Set version variable with v, for use in tag and release
         run: 'echo "RELEASE_TAG=v$(npm run --silent sdk-version)" >> $GITHUB_ENV'

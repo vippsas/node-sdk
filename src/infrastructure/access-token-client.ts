@@ -1,11 +1,12 @@
 import { OutgoingHttpHeaders } from 'node:http';
-import { post } from '../utils/http-request';
-import * as types from '../@types';
 
-type VippsCredentials = Pick<types.InternalVippsConfiguration, 'clientId' | 'clientSecret' | 'subscriptionKey'>;
+import { AuthorizationTokenResponse, InternalVippsConfiguration } from '../@types';
+import { post } from '../utils';
+
+export type VippsCredentials = Pick<InternalVippsConfiguration, 'clientId' | 'clientSecret' | 'subscriptionKey'>;
 
 export class AccessTokenClient {
-  tokenSet?: types.AuthorizationTokenResponse;
+  tokenSet?: AuthorizationTokenResponse;
   vippsCredentials: VippsCredentials;
 
   hostname: string;
@@ -13,7 +14,7 @@ export class AccessTokenClient {
 
   constructor(vippsCredentials: VippsCredentials, useTestMode = false) {
     this.vippsCredentials = vippsCredentials;
-    this.hostname = useTestMode ? 'apitest.vipps.no' : 'api.vipps.no';
+    this.hostname = process.env.VIPPS_HOSTNAME ?? useTestMode ? 'https://apitest.vipps.no' : 'https://api.vipps.no';
     this.headers = {
       client_id: vippsCredentials.clientId,
       client_secret: vippsCredentials.clientSecret,
@@ -26,7 +27,7 @@ export class AccessTokenClient {
       return this.tokenSet.access_token;
     }
 
-    const accessTokenResponse = await post<unknown, types.AuthorizationTokenResponse>(
+    const accessTokenResponse = await post<unknown, AuthorizationTokenResponse>(
       this.hostname,
       '/accesstoken/get',
       this.headers,

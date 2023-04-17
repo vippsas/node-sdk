@@ -19,6 +19,7 @@ node_modules/
 
 # production
 /lib
+/types
 
 # dotenv environment variables file
 .env

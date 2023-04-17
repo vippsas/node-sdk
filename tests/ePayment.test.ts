@@ -11,12 +11,12 @@ describe('EPayment Integration Test', () => {
     const reference = uuidv4();
     const payment = await ePayment.createPayment({
       amount: {
-        currency: types.EPayment.Currency.NOK,
+        currency: types.EPaymentCurrency.NOK,
         value: 100,
       },
       reference,
       paymentMethod: {
-        type: types.EPayment.PaymentMethodType.WALLET,
+        type: types.EPaymentPaymentMethodType.WALLET,
       },
       userFlow: 'WEB_REDIRECT',
       returnUrl: 'example.com/test',
@@ -29,25 +29,25 @@ describe('EPayment Integration Test', () => {
     const cancelPaymentResponse = await ePayment.cancelPayment(reference);
     expect(cancelPaymentResponse).not.toBeNull();
     expect(cancelPaymentResponse.reference).toBe(reference);
-    expect(cancelPaymentResponse.state).toBe(types.EPayment.State.TERMINATED);
+    expect(cancelPaymentResponse.state).toBe(types.EPaymentState.TERMINATED);
 
     const paymentDetails = await ePayment.getPayment(reference);
     expect(paymentDetails).not.toBeNull();
     expect(paymentDetails.reference).toBe(reference);
-    expect(paymentDetails.state).toBe(types.EPayment.State.TERMINATED);
+    expect(paymentDetails.state).toBe(types.EPaymentState.TERMINATED);
   }, 40_000);
 
   test('Should create, approve, capture and refund correct payment', async () => {
     const ePayment = new EPayment(internalVippsConfiguration);
     const reference = uuidv4();
-    const createPaymentRequest: types.EPayment.CreatePaymentRequest = {
+    const createPaymentRequest: types.EPaymentCreatePaymentRequest = {
       amount: {
-        currency: types.EPayment.Currency.NOK,
+        currency: types.EPaymentCurrency.NOK,
         value: 100,
       },
       reference,
       paymentMethod: {
-        type: types.EPayment.PaymentMethodType.WALLET,
+        type: types.EPaymentPaymentMethodType.WALLET,
       },
       userFlow: 'WEB_REDIRECT',
       returnUrl: 'example.com/test',
@@ -67,7 +67,7 @@ describe('EPayment Integration Test', () => {
     });
     expect(captureResponse).not.toBeNull();
     expect(captureResponse.reference).toBe(reference);
-    expect(captureResponse.state).toBe(types.EPayment.State.AUTHORIZED);
+    expect(captureResponse.state).toBe(types.EPaymentState.AUTHORIZED);
     expect(captureResponse.amount).toEqual(createPaymentRequest.amount);
 
     const refundResponse = await ePayment.refundPayment(reference, {
@@ -75,7 +75,7 @@ describe('EPayment Integration Test', () => {
     });
     expect(refundResponse).not.toBeNull();
     expect(refundResponse.reference).toBe(reference);
-    expect(refundResponse.state).toBe(types.EPayment.State.AUTHORIZED);
+    expect(refundResponse.state).toBe(types.EPaymentState.AUTHORIZED);
     expect(refundResponse.amount).toEqual(createPaymentRequest.amount);
 
     const paymentEvents = await ePayment.getPaymentEventLog(reference);

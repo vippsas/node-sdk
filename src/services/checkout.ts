@@ -1,16 +1,22 @@
 import { OutgoingHttpHeaders } from 'http';
-import { get, post } from '../utils/http-request';
-import * as types from '../@types';
+
+import {
+  CheckoutInitiateSessionRequest,
+  CheckoutInitiateSessionResponse,
+  CheckoutSessionResponse,
+  InternalVippsConfiguration,
+} from '../@types';
+import { get, post } from '../utils';
 
 export class Checkout {
-  private headers: OutgoingHttpHeaders;
-  private checkoutSessionPath: string;
-  private vippsHostname: string;
+  private readonly headers: OutgoingHttpHeaders;
+  private readonly checkoutSessionPath: string;
+  private readonly vippsHostname: string;
 
-  constructor(configuration: types.InternalVippsConfiguration) {
+  constructor(configuration: InternalVippsConfiguration) {
     this.checkoutSessionPath = '/checkout/v3/session';
-    // TODO: apitest.vipps.no for testmode
-    this.vippsHostname = configuration.useTestMode ? 'apitest.vipps.no' : 'api.vipps.no';
+    this.vippsHostname =
+      process.env.VIPPS_HOSTNAME ?? configuration.useTestMode ? 'https://apitest.vipps.no' : 'https://api.vipps.no';
     this.headers = {
       client_id: configuration.clientId,
       client_secret: configuration.clientSecret,
@@ -24,10 +30,8 @@ export class Checkout {
     };
   }
 
-  async createSession(
-    requestData: types.Checkout.InitiateSessionRequest,
-  ): Promise<types.Checkout.InitiateSessionResponse> {
-    return post<types.Checkout.InitiateSessionRequest, types.Checkout.InitiateSessionResponse>(
+  async createSession(requestData: CheckoutInitiateSessionRequest): Promise<CheckoutInitiateSessionResponse> {
+    return post<CheckoutInitiateSessionRequest, CheckoutInitiateSessionResponse>(
       this.vippsHostname,
       this.checkoutSessionPath,
       this.headers,
@@ -35,11 +39,7 @@ export class Checkout {
     );
   }
 
-  async getSessionDetails(reference: string): Promise<types.Checkout.SessionResponse> {
-    return get<types.Checkout.SessionResponse>(
-      this.vippsHostname,
-      `${this.checkoutSessionPath}/${reference}`,
-      this.headers,
-    );
+  async getSessionDetails(reference: string): Promise<CheckoutSessionResponse> {
+    return get<CheckoutSessionResponse>(this.vippsHostname, `${this.checkoutSessionPath}/${reference}`, this.headers);
   }
 }

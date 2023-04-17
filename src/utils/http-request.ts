@@ -1,4 +1,4 @@
-import { OutgoingHttpHeaders } from 'node:http';
+import http, { OutgoingHttpHeaders } from 'node:http';
 import https from 'node:https';
 import retry from 'async-retry';
 
@@ -11,14 +11,16 @@ function makeRequest<TR>(
 ): Promise<TR> {
   const options: https.RequestOptions = {
     method,
-    hostname,
+    hostname: hostname.replace(/https?:\/{2}/gi, ''),
     path,
     headers,
   };
 
+  const client = hostname.startsWith('https') ? https : http;
+
   return new Promise<TR>((resolve, reject) => {
     const chunks: any[] = [];
-    const req = https
+    const req = client
       .request(options, (res) => {
         res.on('data', (chunk) => {
           chunks.push(chunk);
