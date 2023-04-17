@@ -3,20 +3,23 @@ import https from 'node:https';
 import retry from 'async-retry';
 
 function makeRequest<TR>(
-  hostname: string,
+  host: string,
   method: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE',
   path: string,
   headers: OutgoingHttpHeaders,
   requestData?: any,
 ): Promise<TR> {
+  const [, protocol, hostname, port] = host.match(/^(https?):\/{2}([^/:]*):?(\d{0,4})$/i) || [];
+
   const options: https.RequestOptions = {
     method,
-    hostname: hostname.replace(/https?:\/{2}/gi, ''),
+    hostname,
+    port,
     path,
     headers,
   };
 
-  const client = hostname.startsWith('https') ? https : http;
+  const client = protocol === 'https' ? https : http;
 
   return new Promise<TR>((resolve, reject) => {
     const chunks: any[] = [];

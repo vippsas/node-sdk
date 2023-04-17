@@ -23,9 +23,10 @@ export class EPayment {
   private accessTokenClient: AccessTokenClient;
 
   constructor(configuration: InternalVippsConfiguration) {
+    const vippsHostname = configuration.useTestMode ? 'https://apitest.vipps.no' : 'https://api.vipps.no';
+
     this.ePaymentPath = '/epayment/v1/payments';
-    this.vippsHostname =
-      process.env.VIPPS_HOSTNAME ?? configuration.useTestMode ? 'https://apitest.vipps.no' : 'https://api.vipps.no';
+    this.vippsHostname = process.env.VIPPS_HOSTNAME || vippsHostname;
     this.headers = {
       'Content-type': 'application/json; charset="utf-8"',
       'Ocp-Apim-Subscription-Key': configuration.subscriptionKey,
