@@ -14,9 +14,10 @@ export class Checkout {
   private readonly vippsHostname: string;
 
   constructor(configuration: InternalVippsConfiguration) {
+    const vippsHostname = configuration.useTestMode ? 'https://apitest.vipps.no' : 'https://api.vipps.no';
+
     this.checkoutSessionPath = '/checkout/v3/session';
-    this.vippsHostname =
-      process.env.VIPPS_HOSTNAME ?? configuration.useTestMode ? 'https://apitest.vipps.no' : 'https://api.vipps.no';
+    this.vippsHostname = process.env.VIPPS_HOSTNAME || vippsHostname;
     this.headers = {
       client_id: configuration.clientId,
       client_secret: configuration.clientSecret,
