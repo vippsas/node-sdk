@@ -1,8 +1,10 @@
+<!-- START_METADATA
 ---
 sidebar_label: Node
 pagination_next: null
 pagination_prev: null
 ---
+END_METADATA -->
 
 # Node SDK
 
