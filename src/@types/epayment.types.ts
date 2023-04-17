@@ -27,6 +27,7 @@ export interface EPaymentCustomer {
    * @example 4791234567
    */
   phoneNumber?: string;
+  [key: string]: any;
 }
 
 /** Amount object */
@@ -43,15 +44,14 @@ export interface EPaymentAmount {
    * @example 1000
    */
   value: number;
+  [key: string]: any;
 }
 
 /**
  * Currency code as defined in ISO 4217. eg NOK for Norwegian kroner.
  * @example "NOK"
  */
-export enum EPaymentCurrency {
-  NOK = 'NOK',
-}
+export type EPaymentCurrency = 'NOK';
 
 /**
  * Create payment request
@@ -60,13 +60,6 @@ export enum EPaymentCurrency {
 export interface EPaymentCreatePaymentRequest {
   /** Amount object */
   amount: EPaymentAmount;
-  /**
-   * For special cases only. The sales unit must be configured by Vipps to use “direct capture” and directCapture must be set to true in the initiate request.
-   * We strongly recommend using “reserve capture” in all situations, see the FAQ.
-   * The default is false.
-   * @default false
-   */
-  directCapture?: boolean;
   /** Target customer */
   customer?: EPaymentCustomer;
   /**
@@ -130,6 +123,7 @@ export interface EPaymentCreatePaymentRequest {
    * @maxLength 100
    */
   paymentDescription?: string;
+  [key: string]: any;
 }
 
 /**
@@ -147,6 +141,7 @@ export interface EPaymentCreatePaymentResponse {
   redirectUrl?: string;
   /** A reference */
   reference: EPaymentReference;
+  [key: string]: any;
 }
 
 /**
@@ -179,6 +174,7 @@ export interface EPaymentGetPaymentResponse {
   redirectUrl?: string;
   /** A reference */
   reference: EPaymentReference;
+  [key: string]: any;
 }
 
 /** Additional compliance data related to the transaction. */
@@ -188,6 +184,7 @@ export interface EPaymentIndustryData {
    * If present, `passengerName`, `airlineCode`, `airlineDesignatorCode`, and `agencyInvoiceNumber` are all required.
    */
   airlineData?: EPaymentAirlineData;
+  [key: string]: any;
 }
 
 /**
@@ -232,6 +229,7 @@ export interface EPaymentAirlineData {
    * @maxLength 150
    */
   ticketNumber?: string;
+  [key: string]: any;
 }
 
 /** Aggregate */
@@ -244,18 +242,21 @@ export interface EPaymentAggregate {
   capturedAmount: EPaymentAmount;
   /** Amount object */
   refundedAmount: EPaymentAmount;
+  [key: string]: any;
 }
 
 /** CaptureModificationRequest */
 export interface EPaymentCaptureModificationRequest {
   /** Amount object */
   modificationAmount: EPaymentAmount;
+  [key: string]: any;
 }
 
 /** RefundModificationRequest */
 export interface EPaymentRefundModificationRequest {
   /** Amount object */
   modificationAmount: EPaymentAmount;
+  [key: string]: any;
 }
 
 /** ModificationResponse */
@@ -277,6 +278,7 @@ export interface EPaymentModificationResponse {
   pspReference: EPaymentPspReference;
   /** A reference */
   reference: EPaymentReference;
+  [key: string]: any;
 }
 
 /**
@@ -317,12 +319,14 @@ export interface EPaymentAddress {
    * @example "0154"
    */
   postCode: string;
+  [key: string]: any;
 }
 
 /** Profile */
 export interface EPaymentProfileRequest {
   /** A space-separated string list of requested user information in accordance with the OpenID Connect specification. */
   scope?: string;
+  [key: string]: any;
 }
 
 /** Profile */
@@ -330,10 +334,11 @@ export interface EPaymentProfileResponse {
   /**
    * If `profile.scope` was requested in `createPayment` this value will populate once
    * `state` is `AUTHORIZED`. This can be used towards the
-   * [Userinfo endpoint](https://vippsas.github.io/vipps-developer-docs/api/userinfo#operation/getUserinfo)
+   * [Userinfo endpoint](https://developer.vippsmobilepay.com/api/userinfo#operation/getUserinfo)
    * to fetch requested user data.
    */
   sub?: string;
+  [key: string]: any;
 }
 
 /** PaymentMethod */
@@ -343,6 +348,7 @@ export interface EPaymentPaymentMethod {
    * `CARD` has to be combined with a `userFlow` of `WEB_REDIRECT`.
    */
   type: EPaymentPaymentMethodType;
+  [key: string]: any;
 }
 
 /** PaymentMethodResponse */
@@ -358,6 +364,7 @@ export interface EPaymentPaymentMethodResponse {
    * @example "540185"
    */
   cardBin?: string;
+  [key: string]: any;
 }
 
 /**
@@ -365,10 +372,7 @@ export interface EPaymentPaymentMethodResponse {
  * `CARD` has to be combined with a `userFlow` of `WEB_REDIRECT`.
  * @example "WALLET"
  */
-export enum EPaymentPaymentMethodType {
-  WALLET = 'WALLET',
-  CARD = 'CARD',
-}
+export type EPaymentPaymentMethodType = 'WALLET' | 'CARD';
 
 /** PaymentAdjustment */
 export interface EPaymentPaymentAdjustment {
@@ -376,6 +380,7 @@ export interface EPaymentPaymentAdjustment {
   modificationAmount: EPaymentAmount;
   /** A reference */
   modificationReference: EPaymentReference;
+  [key: string]: any;
 }
 
 /** PaymentEventV2 */
@@ -394,6 +399,7 @@ export interface EPaymentPaymentEventv2 {
   idempotencyKey?: string | null;
   /** The outcome of the event */
   success: boolean;
+  [key: string]: any;
 }
 
 /** PaymentEvent */
@@ -422,6 +428,7 @@ export interface EPaymentPaymentEvent {
   idempotencyKey?: string | null;
   /** The outcome of the event */
   success: boolean;
+  [key: string]: any;
 }
 
 /** Problem */
@@ -437,6 +444,7 @@ export interface EPaymentProblem {
   detail?: string;
   /** An id that can be used to facilitate in tracing the error. */
   traceId: string;
+  [key: string]: any;
 }
 
 /**
@@ -449,17 +457,13 @@ export interface EPaymentProblem {
  * - AUTHORIZED : User has approved the payment
  * - TERMINATED : Merchant has terminated the payment via the cancelPayment endpoint
  */
-export enum EPaymentState {
-  CREATED = 'CREATED',
-  ABORTED = 'ABORTED',
-  EXPIRED = 'EXPIRED',
-  AUTHORIZED = 'AUTHORIZED',
-  TERMINATED = 'TERMINATED',
-}
+export type EPaymentState = 'CREATED' | 'ABORTED' | 'EXPIRED' | 'AUTHORIZED' | 'TERMINATED';
 
 /** ForceApprove */
 export interface EPaymentForceApprove {
   /** Target customer */
   customer?: EPaymentCustomer;
+  /** The token value received in the redirectUrl property in the Create payment response */
   token?: string;
+  [key: string]: any;
 }

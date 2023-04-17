@@ -1,6 +1,6 @@
 {
   "name": "@vippsno/vipps-sdk",
-  "version": "0.9.1",
+  "version": "0.9.2",
   "homepage": "https://www.npmjs.com/package/@vippsno/vipps-sdk",
   "repository": {
     "type": "git",
@@ -30,9 +30,9 @@
   "scripts": {
     "test": "jest",
     "build": "node esbuild.config.js && tsc && api-extractor run --local --verbose",
-    "autogen:checkout": "swagger-typescript-api -p \"https://vippsas.github.io/vipps-developer-docs/redocusaurus/checkout-swagger-id.yaml\"  -o ./src/@types -n checkout.types.ts --no-client --type-prefix Checkout",
-    "autogen:epayment": "swagger-typescript-api -p \"https://vippsas.github.io/vipps-developer-docs/redocusaurus/epayment-swagger-id.yaml\"  -o ./src/@types -n epayment.types.ts --no-client --type-prefix EPayment",
-    "autogen:access-token": "swagger-typescript-api -p \"https://vippsas.github.io/vipps-developer-docs/redocusaurus/access-token-swagger-id.yaml\"  -o ./src/@types -n access-token.types.ts --no-client",
+    "autogen:checkout": "swagger-typescript-api -p \"https://vippsas.github.io/vipps-developer-docs/redocusaurus/checkout-swagger-id.yaml\"  -o ./src/@types -n checkout.types.ts --no-client --union-enums --type-prefix Checkout",
+    "autogen:epayment": "swagger-typescript-api -p \"https://vippsas.github.io/vipps-developer-docs/redocusaurus/epayment-swagger-id.yaml\"  -o ./src/@types -n epayment.types.ts --no-client --union-enums --type-prefix EPayment",
+    "autogen:access-token": "swagger-typescript-api -p \"https://vippsas.github.io/vipps-developer-docs/redocusaurus/access-token-swagger-id.yaml\"  -o ./src/@types -n access-token.types.ts --union-enums --no-client",
     "audit": "npm audit --registry=https://registry.npmjs.org/",
     "lint": "eslint src --color",
     "prettier": "prettier -c src",
