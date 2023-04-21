@@ -1,6 +1,6 @@
 {
   "name": "@vippsno/vipps-sdk",
-  "version": "0.9.3",
+  "version": "0.9.4",
   "homepage": "https://www.npmjs.com/package/@vippsno/vipps-sdk",
   "repository": {
     "type": "git",
@@ -14,11 +14,12 @@
     "npm": ">=7.x.x"
   },
   "description": "Vipps SDK",
-  "main": "lib/index.cjs",
+  "main": "./lib/index.cjs",
   "type": "module",
-  "types": "lib/index.d.ts",
+  "types": "./lib/index.d.ts",
   "exports": {
     ".": {
+      "types": "./lib/index.d.ts",
       "import": "./lib/index.mjs",
       "require": "./lib/index.cjs"
     }
