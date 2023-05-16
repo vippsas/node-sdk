@@ -1,8 +1,12 @@
+---
+draft: true
+---
+
 # Contributing
 
 ## Getting started
 
-Read the readme.md file.
+Read the [README](README.md).
 
 ## Issues
 
@@ -20,8 +24,8 @@ If an issue doesn't exist, open a new issue using a relevant issue form.
 
 **Remember to bump the version depending on breaking, feature or patch in every pull request**
 
-Use npm version to bump the major, minor or patch version.
-See 'npm version -help' in the terminal
+Use `npm version` to bump the major, minor or patch version.
+See `npm version -help` in the terminal.
 
 **The pipeline will on every push to main:**
 
