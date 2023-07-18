@@ -1,6 +1,7 @@
 import http, { OutgoingHttpHeaders } from 'node:http';
 import https from 'node:https';
 import retry from 'async-retry';
+import querystring from 'querystring';
 
 function makeRequest<TR>(
   host: string,
@@ -38,6 +39,8 @@ function makeRequest<TR>(
               resolve(JSON.parse(body));
             } else if (res.headers['content-type']?.includes('text/plain')) {
               resolve(body as TR);
+            } else if (res.headers['content-type']?.includes('application/x-www-form-urlencoded')) {
+              resolve(JSON.parse(body));
             }
             resolve(null as TR);
           } catch (e) {
@@ -50,7 +53,11 @@ function makeRequest<TR>(
       });
 
     if (requestData) {
-      req.write(JSON.stringify(requestData));
+      if (headers['Content-type'] === 'application/x-www-form-urlencoded; charset="utf-8"') {
+        req.write(querystring.stringify(requestData));
+      } else {
+        req.write(JSON.stringify(requestData));
+      }
     }
 
     req.end();
@@ -61,4 +68,11 @@ export const get = <TR>(hostname: string, path: string, headers: OutgoingHttpHea
   retry(() => makeRequest<TR>(hostname, 'GET', path, headers), { retries: 4 });
 
 export const post = <TI, TR>(hostname: string, path: string, headers: OutgoingHttpHeaders, requestData?: TI) =>
-  retry(() => makeRequest<TR>(hostname, 'POST', path, headers, requestData), { retries: 4 });
+  retry(() => makeRequest<TR>(hostname, 'POST', path, headers, requestData), {
+    retries: 4,
+  });
+
+export const deleteRequest = <TI, TR>(hostname: string, path: string, headers: OutgoingHttpHeaders, requestData?: TI) =>
+  retry(() => makeRequest<TR>(hostname, 'DELETE', path, headers, requestData), {
+    retries: 4,
+  });
