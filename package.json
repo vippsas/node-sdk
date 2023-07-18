@@ -34,6 +34,7 @@
     "autogen:checkout": "swagger-typescript-api -p \"https://vippsas.github.io/vipps-developer-docs/redocusaurus/checkout-swagger-id.yaml\"  -o ./src/@types -n checkout.types.ts --no-client --union-enums --type-prefix Checkout",
     "autogen:epayment": "swagger-typescript-api -p \"https://vippsas.github.io/vipps-developer-docs/redocusaurus/epayment-swagger-id.yaml\"  -o ./src/@types -n epayment.types.ts --no-client --union-enums --type-prefix EPayment",
     "autogen:access-token": "swagger-typescript-api -p \"https://vippsas.github.io/vipps-developer-docs/redocusaurus/access-token-swagger-id.yaml\"  -o ./src/@types -n access-token.types.ts --union-enums --no-client",
+    "autogen:login": "swagger-typescript-api -p \"https://vippsas.github.io/vipps-developer-docs/redocusaurus/login-swagger-id.yaml\"  -o ./src/@types -n login.types.ts --no-client --union-enums --type-prefix Login",
     "audit": "npm audit --registry=https://registry.npmjs.org/",
     "lint": "eslint src --color",
     "prettier": "prettier -c src",
