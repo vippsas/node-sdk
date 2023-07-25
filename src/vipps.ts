@@ -1,8 +1,8 @@
-import { Checkout, EPayment, Login } from "./services";
-import { VippsConfiguration } from "./@types";
+import { Checkout, EPayment, Login } from './services';
+import { VippsConfiguration } from './@types';
 
-const VIPPS_SYSTEM_NAME = "Vipps Node SDK";
-const VIPPS_SYSTEM_VERSION = "0.9.0";
+const VIPPS_SYSTEM_NAME = 'Vipps Node SDK';
+const VIPPS_SYSTEM_VERSION = '0.9.0';
 
 export class Vipps {
   checkout: Checkout;

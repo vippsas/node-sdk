@@ -67,7 +67,7 @@ function makeRequest<TR>(
 
     if (requestData) {
       if (
-        headers["Content-type"] ==
+        headers["Content-type"] ===
         'application/x-www-form-urlencoded; charset="utf-8"'
       ) {
         req.write(querystring.stringify(requestData));

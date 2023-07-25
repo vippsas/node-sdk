@@ -9,7 +9,7 @@
  * ---------------------------------------------------------------
  */
 
-import { kStringMaxLength } from "node:buffer";
+import { kStringMaxLength } from 'node:buffer';
 
 export interface LoginJSONWebKey {
   /**
