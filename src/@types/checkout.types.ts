@@ -504,21 +504,21 @@ export type CheckoutPostnordLogisticsType = 'PICKUP_POINT' | 'HOME_DELIVERY';
  */
 export interface CheckoutPrefillCustomer {
   /** Example: "Ada" */
-  firstName: string;
+  firstName?: string;
   /** Example: "Lovelace" */
-  lastName: string;
+  lastName?: string;
   /** Example: "user@example.com" */
-  email: string;
+  email?: string;
   /** Format must be MSISDN (including country code). Example: "4791234567" */
-  phoneNumber: string;
+  phoneNumber?: string;
   /** Example: "Robert Levins gate 5" */
-  streetAddress: string;
+  streetAddress?: string;
   /** Example: "Oslo" */
-  city: string;
+  city?: string;
   /** Example: "0154" */
-  postalCode: string;
+  postalCode?: string;
   /** The ISO-3166-1 Alpha-2 representation of the country. Example: "NO" */
-  country: string;
+  country?: string;
   [key: string]: any;
 }
 
