@@ -10,10 +10,12 @@ END_METADATA -->
 
 The official Node SDK for the Checkout and ePayment APIs.
 
-**IMPORTANT: Use the SDK for backend applications only!**<br>
+**IMPORTANT: Use the SDK for backend applications only!**
+
 The SDK is compatible with Node, Remix, NextJS, Gatsby, and other node-based backend frameworks that supports `node:http`.
 
-**DO NOT USE WITH React, Vue, Angular, or other frontend frameworks (except when SSR)!**<br>
+**DO NOT USE WITH React, Vue, Angular, or other frontend frameworks (except when SSR)!**
+
 It is important to never expose your client keys or secrets in frontend applications.
 
 You can install the SDK with NPM as per [Installation](#installation).
