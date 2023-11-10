@@ -42,7 +42,7 @@ yarn add @vippsno/vipps-sdk
 
 ## Usage
 
-We recommend inspecting the types for a detailed description of class constructor- and method arguments. The API guidelines for [Checkout](https://vippsas.github.io/vipps-developer-docs/docs/APIs/checkout-api) and [ePayment](https://vippsas.github.io/vipps-developer-docs/docs/APIs/epayment-api) should also be used as reference, e.g. when in doubt about the meaning of property or its allowed values.
+We recommend inspecting the types for a detailed description of class constructor- and method arguments. The API guidelines for [Checkout](https://developer.vippsmobilepay.com/docs/APIs/checkout-) and [ePayment](https://developer.vippsmobilepay.com/docs/APIs/epayment-api) should also be used as reference, e.g. when in doubt about the meaning of property or its allowed values.
 
 Example showing configuration and calling a method which creates a Checkout session:
 
