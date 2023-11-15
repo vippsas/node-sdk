@@ -62,3 +62,8 @@ export const get = <TR>(hostname: string, path: string, headers: OutgoingHttpHea
 
 export const post = <TI, TR>(hostname: string, path: string, headers: OutgoingHttpHeaders, requestData?: TI) =>
   retry(() => makeRequest<TR>(hostname, 'POST', path, headers, requestData), { retries: 4 });
+
+export const deleteRequest = <TI, TR>(hostname: string, path: string, headers: OutgoingHttpHeaders, requestData?: TI) =>
+  retry(() => makeRequest<TR>(hostname, 'DELETE', path, headers, requestData), {
+    retries: 4,
+  });
