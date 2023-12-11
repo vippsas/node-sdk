@@ -392,7 +392,7 @@ export interface CheckoutPaymentTransaction {
   /** Amounts are specified in minor units. For Norwegian kroner (NOK) that means 1 kr = 100 øre. Example: 499 kr = 49900 øre. */
   amount: CheckoutAmount;
   /**
-   * The merchant's unique reference for the transaction. Also known as OrderId. Example: "acme-shop-123-order123abc". See https://vippsas.github.io/vipps-developer-docs/docs/vipps-developers/common-topics/orderid
+   * The merchant's unique reference for the transaction. Also known as OrderId. Example: "acme-shop-123-order123abc". See https://developer.vippsmobilepay.com/docs/knowledge-base/orderid/
    * @minLength 8
    * @maxLength 50
    * @pattern ^[-a-zA-Z0-9]*$
@@ -538,7 +538,7 @@ export interface CheckoutSessionResponse {
   sessionId: string;
   /** The merchant's serial number. Example: "123456" */
   merchantSerialNumber?: string | null;
-  /** The merchant's unique reference for the transaction. Also known as OrderId. Example: "acme-shop-123-order123abc". See https://vippsas.github.io/vipps-developer-docs/docs/vipps-developers/common-topics/orderid */
+  /** The merchant's unique reference for the transaction. Also known as OrderId. Example: "acme-shop-123-order123abc". See https://developer.vippsmobilepay.com/docs/knowledge-base/orderid/ */
   reference: string;
   /** The state of the session. Example: "SessionStarted". The state of the payment is in PaymentDetails.State. */
   sessionState: CheckoutExternalSessionState;
