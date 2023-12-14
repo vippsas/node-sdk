@@ -1,6 +1,7 @@
 import http, { OutgoingHttpHeaders } from 'node:http';
 import https from 'node:https';
 import retry from 'async-retry';
+import packageJSON from '../../package.json';
 
 function makeRequest<TR>(
   host: string,
@@ -10,13 +11,17 @@ function makeRequest<TR>(
   requestData?: any,
 ): Promise<TR> {
   const [, protocol, hostname, port] = host.match(/^(https?):\/{2}([^/:]*):?(\d{0,4})$/i) || [];
+  
+  const version = packageJSON.version || 'local';
+  const newHeaders = { ...headers}
+  newHeaders['user-agent'] = `Vipps/Node SDK/${version}`;
 
   const options: https.RequestOptions = {
     method,
     hostname,
     port,
     path,
-    headers,
+    headers: newHeaders,
   };
 
   const client = protocol === 'https' ? https : http;
