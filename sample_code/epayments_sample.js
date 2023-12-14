@@ -1,16 +1,18 @@
-import VM from '@vippsno/vipps-sdk'
+import 'dotenv/config';
+import VM from '@vippsno/vipps-sdk';
 import { v4 as uuidv4 } from 'uuid';
-import 'dotenv/config'
+import open, {openApp, apps} from 'open';
 
 // First, get your API keys from https://portal.vipps.no/
-// Here we assume they are stored in a .env file
+// Here we assume they are stored in a .env file in the folder you are running this script from
 const clientId = process.env.CLIENT_ID || "";
 const clientSecret = process.env.CLIENT_SECRET || "";
-
 const merchantSerialNumber = process.env.MERCHANT_SERIAL_NUMBER || "";
 const subscriptionKey = process.env.SUBSCRIPTION_KEY || "";
 
+// Create a unique reference for this payment
 const reference = uuidv4();
+// The phone number of the customer
 const customerPhoneNumber = '4712345678';
 
 // Create a new instance of the SDK
@@ -42,6 +44,8 @@ const payment = await client.ePayment.createPayment({
     paymentDescription: "One pair of socks",
 });
 
+// Get the payment details
 const paymentDetails = await client.ePayment.getPayment(reference);
-console.log("Payment details are:\n", paymentDetails);
-console.log("Paste the redirectUrl into the address field of a browser to complete the payment.");
+
+// Open the default browser with the redirect URL
+await open(paymentDetails.redirectUrl);
