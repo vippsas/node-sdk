@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import VM from '@vippsno/vipps-sdk';
 import { v4 as uuidv4 } from 'uuid';
-import open, {openApp, apps} from 'open';
+import open from 'open';
 
 // First, get your API keys from https://portal.vipps.no/
 // Here we assume they are stored in a .env file in the folder you are running this script from
