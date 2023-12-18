@@ -1,6 +1,6 @@
 {
   "name": "@vippsno/vipps-sdk",
-  "version": "0.9.13",
+  "version": "0.9.14",
   "homepage": "https://developer.vippsmobilepay.com/docs/SDKs/node-sdk",
   "repository": {
     "type": "git",
