@@ -1,6 +1,7 @@
 import http, { OutgoingHttpHeaders } from 'node:http';
 import https from 'node:https';
 import retry from 'async-retry';
+import packageJSON from '../../package.json';
 
 function makeRequest<TR>(
   host: string,
@@ -11,12 +12,16 @@ function makeRequest<TR>(
 ): Promise<TR> {
   const [, protocol, hostname, port] = host.match(/^(https?):\/{2}([^/:]*):?(\d{0,4})$/i) || [];
 
+  const sdkVersion = packageJSON.version || 'unknown';
+  const newHeaders = { ...headers };
+  newHeaders['user-agent'] = `Vipps/Node SDK/${sdkVersion}`;
+
   const options: https.RequestOptions = {
     method,
     hostname,
     port,
     path,
-    headers,
+    headers: newHeaders,
   };
 
   const client = protocol === 'https' ? https : http;
@@ -61,4 +66,6 @@ export const get = <TR>(hostname: string, path: string, headers: OutgoingHttpHea
   retry(() => makeRequest<TR>(hostname, 'GET', path, headers), { retries: 4 });
 
 export const post = <TI, TR>(hostname: string, path: string, headers: OutgoingHttpHeaders, requestData?: TI) =>
-  retry(() => makeRequest<TR>(hostname, 'POST', path, headers, requestData), { retries: 4 });
+  retry(() => makeRequest<TR>(hostname, 'POST', path, headers, requestData), {
+    retries: 4,
+  });
