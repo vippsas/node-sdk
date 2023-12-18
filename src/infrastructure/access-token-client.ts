@@ -42,8 +42,11 @@ export class AccessTokenClient {
     }
 
     const maxValidTo = new Date();
-    maxValidTo.setMinutes(maxValidTo.getMinutes() - 3);
+    maxValidTo.setMinutes(maxValidTo.getMinutes() + 3);
 
-    return maxValidTo < new Date(this.tokenSet.expires_on);
+    const expiresOn = new Date(0);
+    expiresOn.setSeconds(this.tokenSet.expires_on);
+
+    return maxValidTo > expiresOn;
   }
 }
