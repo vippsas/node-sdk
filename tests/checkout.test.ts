@@ -1,10 +1,10 @@
 import { v4 as uuidv4 } from 'uuid';
 import { Checkout } from '../src/services';
-import { internalVippsConfiguration } from './utils/testConfiguration';
+import { vippsConfiguration } from './testConfiguration';
 
 describe('Checkout Integration Test', () => {
   test('Should create and get session', async () => {
-    const checkout = new Checkout(internalVippsConfiguration);
+    const checkout = new Checkout(vippsConfiguration);
     const reference = uuidv4();
     const checkoutSession = await checkout.createSession({
       merchantInfo: {

@@ -3,13 +3,12 @@ import { v4 as uuidv4 } from 'uuid';
 import * as types from '../src/@types';
 import { EPayment } from '../src/services';
 
-import { internalVippsConfiguration } from './utils/testConfiguration';
-
+import { vippsConfiguration } from './testConfiguration';
 const customerPhoneNumber = '4747753942';
 
 describe('EPayment Integration Test', () => {
   test('Should create, cancel and get correct payment', async () => {
-    const ePayment = new EPayment(internalVippsConfiguration);
+    const ePayment = new EPayment(vippsConfiguration);
     const reference = uuidv4();
     const payment = await ePayment.createPayment({
       amount: {
@@ -40,7 +39,7 @@ describe('EPayment Integration Test', () => {
   }, 40_000);
 
   test('Should create, approve, capture and refund correct payment', async () => {
-    const ePayment = new EPayment(internalVippsConfiguration);
+    const ePayment = new EPayment(vippsConfiguration);
     const reference = uuidv4();
     const createPaymentRequest: types.EPaymentCreatePaymentRequest = {
       amount: {

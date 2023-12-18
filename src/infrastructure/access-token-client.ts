@@ -1,9 +1,9 @@
 import { OutgoingHttpHeaders } from 'node:http';
 
-import { AuthorizationTokenResponse, InternalVippsConfiguration } from '../@types';
+import { AuthorizationTokenResponse, VippsConfiguration } from '../@types';
 import { post } from '../utils';
 
-export type VippsCredentials = Pick<InternalVippsConfiguration, 'clientId' | 'clientSecret' | 'subscriptionKey'>;
+export type VippsCredentials = Pick<VippsConfiguration, 'clientId' | 'clientSecret' | 'subscriptionKey'>;
 
 export class AccessTokenClient {
   tokenSet?: AuthorizationTokenResponse;
