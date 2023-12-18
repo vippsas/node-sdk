@@ -1,8 +1,4 @@
 export interface VippsConfiguration {
-  /** Example: "My plugin" */
-  pluginName: string;
-  /** Example: "1.0.0" */
-  pluginVersion: string;
   /** Client ID for the merchant (the "username"). Found in the Vipps portal.
    * Example: "fb492b5e-7907-4d83-bc20-c7fb60ca35de". */
   clientId: string;
@@ -15,11 +11,14 @@ export interface VippsConfiguration {
   /** Vipps assigned unique number for a merchant. Found in the Vipps portal.
    * Example: "123456". */
   merchantSerialNumber: string;
+  /** The name of the ecommerce solution. Example: "Acme Enterprises Ecommerce DeLuxe". */
+  vippsSystemName?: string;
+  /** The version number of the ecommerce solution. Example: "3.1.2". */
+  vippsSystemVersion?: string;
+  /** The name of the ecommerce plugin. Example: "acme-webshop". */
+  pluginName?: string;
+  /** The version number of the ecommerce plugin. Example: "4.5.6". */
+  pluginVersion?: string;
   /** If true, uses Vipps test environment */
   useTestMode?: boolean;
-}
-
-export interface InternalVippsConfiguration extends VippsConfiguration {
-  vippsSystemName: string;
-  vippsSystemVersion: string;
 }

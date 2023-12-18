@@ -1,6 +1,6 @@
-import { InternalVippsConfiguration } from '@types';
+import { VippsConfiguration } from '../src/@types';
 
-export const internalVippsConfiguration: InternalVippsConfiguration = {
+export const vippsConfiguration: VippsConfiguration = {
   pluginName: 'test',
   pluginVersion: '1',
   clientId: process.env.CLIENT_ID || process.exit(1),

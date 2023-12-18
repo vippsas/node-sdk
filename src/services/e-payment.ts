@@ -11,7 +11,7 @@ import {
   EPaymentPaymentEvent,
   EPaymentReference,
   EPaymentRefundModificationRequest,
-  InternalVippsConfiguration,
+  VippsConfiguration,
 } from '../@types';
 import { AccessTokenClient } from '../infrastructure';
 import { get, post } from '../utils';
@@ -22,7 +22,7 @@ export class EPayment {
   private vippsHostname: string;
   private accessTokenClient: AccessTokenClient;
 
-  constructor(configuration: InternalVippsConfiguration) {
+  constructor(configuration: VippsConfiguration) {
     const vippsHostname = configuration.useTestMode ? 'https://apitest.vipps.no' : 'https://api.vipps.no';
 
     this.ePaymentPath = '/epayment/v1/payments';
@@ -31,10 +31,10 @@ export class EPayment {
       'Content-type': 'application/json; charset="utf-8"',
       'Ocp-Apim-Subscription-Key': configuration.subscriptionKey,
       'Merchant-Serial-Number': configuration.merchantSerialNumber,
-      'Vipps-System-Name': configuration.vippsSystemName,
-      'Vipps-System-Version': configuration.vippsSystemVersion,
-      'Vipps-System-Plugin-Name': configuration.pluginName,
-      'Vipps-System-Plugin-Version': configuration.pluginVersion,
+      'Vipps-System-Name': configuration.vippsSystemName || "",
+      'Vipps-System-Version': configuration.vippsSystemVersion || "",
+      'Vipps-System-Plugin-Name': configuration.pluginName || "",
+      'Vipps-System-Plugin-Version': configuration.pluginVersion || "",
     };
     this.accessTokenClient = new AccessTokenClient(
       {

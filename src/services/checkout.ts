@@ -4,7 +4,7 @@ import {
   CheckoutInitiateSessionRequest,
   CheckoutInitiateSessionResponse,
   CheckoutSessionResponse,
-  InternalVippsConfiguration,
+  VippsConfiguration,
 } from '../@types';
 import { get, post } from '../utils';
 
@@ -13,7 +13,7 @@ export class Checkout {
   private readonly checkoutSessionPath: string;
   private readonly vippsHostname: string;
 
-  constructor(configuration: InternalVippsConfiguration) {
+  constructor(configuration: VippsConfiguration) {
     const vippsHostname = configuration.useTestMode ? 'https://apitest.vipps.no' : 'https://api.vipps.no';
 
     this.checkoutSessionPath = '/checkout/v3/session';
@@ -24,10 +24,10 @@ export class Checkout {
       'Content-type': 'application/json; charset="utf-8"',
       'Ocp-Apim-Subscription-Key': configuration.subscriptionKey,
       'Merchant-Serial-Number': configuration.merchantSerialNumber,
-      'Vipps-System-Name': configuration.vippsSystemName,
-      'Vipps-System-Version': configuration.vippsSystemVersion,
-      'Vipps-System-Plugin-Name': configuration.pluginName,
-      'Vipps-System-Plugin-Version': configuration.pluginVersion,
+      'Vipps-System-Name': configuration.vippsSystemName || "",
+      'Vipps-System-Version': configuration.vippsSystemVersion || "",
+      'Vipps-System-Plugin-Name': configuration.pluginName || "",
+      'Vipps-System-Plugin-Version': configuration.pluginVersion || "",
     };
   }
 
