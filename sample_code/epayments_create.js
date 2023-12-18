@@ -4,7 +4,8 @@ import { v4 as uuidv4 } from 'uuid';
 import open from 'open';
 
 // First, get your API keys from https://portal.vipps.no/
-// Here we assume they are stored in a .env file in the folder you are running this script from
+// Here we assume they are stored in a .env file in the folder you 
+// are running this script from, see .env.example
 const clientId = process.env.CLIENT_ID || "";
 const clientSecret = process.env.CLIENT_SECRET || "";
 const merchantSerialNumber = process.env.MERCHANT_SERIAL_NUMBER || "";
@@ -13,7 +14,7 @@ const subscriptionKey = process.env.SUBSCRIPTION_KEY || "";
 // Create a unique reference for this payment
 const reference = uuidv4();
 // The phone number of the customer
-const customerPhoneNumber = '4712345678';
+const customerPhoneNumber = '4747753942';
 
 // Create a new instance of the SDK
 const client = new VM({
