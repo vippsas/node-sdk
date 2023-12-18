@@ -1,7 +1,7 @@
 import http, { OutgoingHttpHeaders } from 'node:http';
 import https from 'node:https';
 import retry from 'async-retry';
-import version from './version.json';
+import packageJSON from '../../package.json';
 
 function makeRequest<TR>(
   host: string,
@@ -12,7 +12,7 @@ function makeRequest<TR>(
 ): Promise<TR> {
   const [, protocol, hostname, port] = host.match(/^(https?):\/{2}([^/:]*):?(\d{0,4})$/i) || [];
 
-  const sdkVersion = version['sdk-version'] || 'unknown';
+  const sdkVersion = packageJSON['version'] || 'unknown';
   const newHeaders = { ...headers };
   newHeaders['user-agent'] = `Vipps/Node SDK/${sdkVersion}`;
 
