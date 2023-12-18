@@ -3,7 +3,8 @@ import { v4 as uuidv4 } from 'uuid';
 import VM from '@vippsno/vipps-sdk'
 
 // First, get your API keys from https://portal.vipps.no/
-// Here we assume they are stored in a .env file in the folder you are running this script from
+// Here we assume they are stored in a .env file in the folder you 
+// are running this script from, see .env.example
 const clientId = process.env.CLIENT_ID || "";
 const clientSecret = process.env.CLIENT_SECRET || "";
 const merchantSerialNumber = process.env.MERCHANT_SERIAL_NUMBER || "";
