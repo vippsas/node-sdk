@@ -43,9 +43,25 @@ const payment = await client.ePayment.createPayment({
   paymentDescription: "One pair of socks",
 });
 
-// Cancel the payment
-await client.ePayment.cancelPayment(reference)
+// Force approve the payment (requires that you manually approve the payment at least once in Vipps MT)
+await client.ePayment.forceApprovePayment(reference, {customer: {phoneNumber: customerPhoneNumber} })
 
-// Get the payment event log
+// Capture the payment
+const captureResponse = await client.ePayment.capturePayment(reference, {
+    modificationAmount: {
+      currency: 'NOK',
+      value: 1000,
+    },
+  });
+
+// Refund the payment
+const refundResponse = await client.ePayment.refundPayment(reference, {
+modificationAmount: {
+    currency: 'NOK',
+    value: 1000,
+},
+});
+
+// Get payment event log
 const paymentEventLog = await client.ePayment.getPaymentEventLog(reference);
 console.log(paymentEventLog);

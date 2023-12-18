@@ -13,7 +13,7 @@ const subscriptionKey = process.env.SUBSCRIPTION_KEY || "";
 // Create a unique reference for this payment
 const reference = uuidv4();
 // The phone number of the customer
-const customerPhoneNumber = '4712345678';
+const customerPhoneNumber = '4747753942';
 
 // Create a new instance of the SDK
 const client = new VM({
