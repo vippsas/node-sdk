@@ -31,10 +31,10 @@ export class EPayment {
       'Content-type': 'application/json; charset="utf-8"',
       'Ocp-Apim-Subscription-Key': configuration.subscriptionKey,
       'Merchant-Serial-Number': configuration.merchantSerialNumber,
-      'Vipps-System-Name': configuration.vippsSystemName || "",
-      'Vipps-System-Version': configuration.vippsSystemVersion || "",
-      'Vipps-System-Plugin-Name': configuration.pluginName || "",
-      'Vipps-System-Plugin-Version': configuration.pluginVersion || "",
+      'Vipps-System-Name': configuration.vippsSystemName || '',
+      'Vipps-System-Version': configuration.vippsSystemVersion || '',
+      'Vipps-System-Plugin-Name': configuration.pluginName || '',
+      'Vipps-System-Plugin-Version': configuration.pluginVersion || '',
     };
     this.accessTokenClient = new AccessTokenClient(
       {

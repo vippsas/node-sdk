@@ -6,7 +6,7 @@ export class Vipps {
   ePayment: EPayment;
 
   constructor(options: VippsConfiguration) {
-    this.checkout = new Checkout({...options});
-    this.ePayment = new EPayment({...options});
+    this.checkout = new Checkout({ ...options });
+    this.ePayment = new EPayment({ ...options });
   }
 }
