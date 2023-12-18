@@ -12,7 +12,7 @@ function makeRequest<TR>(
 ): Promise<TR> {
   const [, protocol, hostname, port] = host.match(/^(https?):\/{2}([^/:]*):?(\d{0,4})$/i) || [];
 
-  const sdkVersion = packageJSON['version'] || 'unknown';
+  const sdkVersion = packageJSON.version || 'unknown';
   const newHeaders = { ...headers };
   newHeaders['user-agent'] = `Vipps/Node SDK/${sdkVersion}`;
 
