@@ -46,8 +46,7 @@ function makeRequest<TR>(
             resolve(null as TR);
           } catch (e) {
             if (e instanceof Error) {
-              const message = JSON.parse(e.message);
-              const result = { ...message, ok: false };
+              const result = { ok: false, error: JSON.parse(e.message) };
               resolve(result as TR);
             }
           }
