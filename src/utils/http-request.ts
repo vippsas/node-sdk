@@ -37,8 +37,7 @@ function makeRequest<TR>(
           try {
             const body = Buffer.concat(chunks).toString();
             if (!res.statusCode || res.statusCode < 200 || res.statusCode > 299) {
-              const error = new Error(`path=${req.path} ,statusCode=${res.statusCode}, contents=${body}`);
-              reject(error);
+              throw new Error(body);
             } else if (res.headers['content-type']?.includes('application/json')) {
               resolve(JSON.parse(body));
             } else if (res.headers['content-type']?.includes('text/plain')) {
@@ -46,7 +45,10 @@ function makeRequest<TR>(
             }
             resolve(null as TR);
           } catch (e) {
-            reject(e);
+            if (e instanceof Error) {
+              const result = { ok: false, error: JSON.parse(e.message) };
+              resolve(result as TR);
+            }
           }
         });
       })
@@ -63,9 +65,9 @@ function makeRequest<TR>(
 }
 
 export const get = <TR>(hostname: string, path: string, headers: OutgoingHttpHeaders): Promise<TR> =>
-  retry(() => makeRequest<TR>(hostname, 'GET', path, headers), { retries: 4 });
+  retry(() => makeRequest<TR>(hostname, 'GET', path, headers), { retries: 3 });
 
 export const post = <TI, TR>(hostname: string, path: string, headers: OutgoingHttpHeaders, requestData?: TI) =>
   retry(() => makeRequest<TR>(hostname, 'POST', path, headers, requestData), {
-    retries: 4,
+    retries: 3,
   });
